@@ -1,8 +1,11 @@
 package dao;
 
+import exceptions.ExistDataBaseException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import utils.DBService;
+
+import javax.persistence.PersistenceException;
 
 public abstract class AbstractDao<T> implements Dao<T> {
     private final SessionFactory factory = DBService.getFactory();
@@ -28,11 +31,24 @@ public abstract class AbstractDao<T> implements Dao<T> {
             session.beginTransaction();
             session.save(entity);
             session.getTransaction().commit();
+        } catch (PersistenceException e) {
+            // TODO
+            throw new ExistDataBaseException(e.getMessage());
         }
     }
 
     @Override
     public void delete(String uuid) {
 
+    }
+
+    @Override
+    public void deleteAll() {
+        try (final Session session = factory.openSession()) {
+            session.beginTransaction();
+            session.createQuery("DELETE FROM ProductEntity").executeUpdate();
+            session.createQuery("DELETE FROM StoreEntity").executeUpdate();
+            session.getTransaction().commit();
+        }
     }
 }

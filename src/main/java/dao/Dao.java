@@ -10,4 +10,5 @@ public interface Dao<T> {
 
     void delete(String uuid);
 
+    void deleteAll();
 }

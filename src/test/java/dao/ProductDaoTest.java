@@ -16,6 +16,13 @@ public class ProductDaoTest extends AbstractDaoTest<ProductEntity> {
         Assert.assertEquals(PRODUCT_1, product);
     }
 
+    public void update() {
+        PRODUCT_1.setDescription("dummy");
+        dao.update(PRODUCT_1);
+        ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getId());
+        Assert.assertEquals(PRODUCT_1, product);
+    }
+
     @Override
     public void save() {
         dao.save(PRODUCT_2);
@@ -28,8 +35,14 @@ public class ProductDaoTest extends AbstractDaoTest<ProductEntity> {
         dao.save(PRODUCT_1);
     }
 
-    @Test
-    public void clear() {
+    @Override
+    public void delete() {
+        dao.delete(PRODUCT_1);
+        dao.findByUuid(ProductEntity.class, PRODUCT_1.getId());
+    }
+
+    @Override
+    public void deleteAll() {
         dao.deleteAll();
         ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getId());
         Assert.assertNull(product);

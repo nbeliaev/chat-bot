@@ -1,6 +1,7 @@
 package dao;
 
 import exceptions.ExistDataBaseException;
+import exceptions.NotExistDataBaseException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import utils.DBService;
@@ -12,17 +13,19 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     @Override
     public T findByUuid(Class<T> clazz, String uuid) {
-        try (final Session session = factory.openSession()) {
-            session.beginTransaction();
-            final T entity = session.get(clazz, uuid);
-            session.getTransaction().commit();
-            return entity;
-        }
+        return interactWithDB((session -> session.get(clazz, uuid)));
     }
 
     @Override
-    public void update(String uuid) {
-
+    public void update(T entity) {
+        try (final Session session = factory.openSession()) {
+            session.beginTransaction();
+            session.update(entity);
+            session.getTransaction().commit();
+        } catch (PersistenceException e) {
+            // TODO
+            throw new NotExistDataBaseException(e.getMessage());
+        }
     }
 
     @Override
@@ -38,17 +41,35 @@ public abstract class AbstractDao<T> implements Dao<T> {
     }
 
     @Override
-    public void delete(String uuid) {
-
+    public void delete(T entity) {
+        try (final Session session = factory.openSession()) {
+            session.beginTransaction();
+            session.delete(entity);
+            session.getTransaction().commit();
+        } catch (PersistenceException e) {
+            // TODO
+            throw new NotExistDataBaseException(e.getMessage());
+        }
     }
 
     @Override
     public void deleteAll() {
-        try (final Session session = factory.openSession()) {
-            session.beginTransaction();
+        interactWithDB((session) -> {
             session.createQuery("DELETE FROM ProductEntity").executeUpdate();
             session.createQuery("DELETE FROM StoreEntity").executeUpdate();
+            return null;
+        });
+    }
+
+    private T interactWithDB(Executor<T> executor) {
+        try (final Session session = factory.openSession()) {
+            session.beginTransaction();
+            T result = executor.execute(session);
             session.getTransaction().commit();
+            return result;
+        } catch (PersistenceException e) {
+            // TODO
+            throw new NotExistDataBaseException(e.getMessage());
         }
     }
 }

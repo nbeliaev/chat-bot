@@ -3,6 +3,7 @@ package dao;
 import entities.ProductEntity;
 import entities.StoreEntity;
 import exceptions.ExistDataBaseException;
+import exceptions.NotExistDataBaseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public abstract class AbstractDaoTest<T> {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         dao.deleteAll();
     }
 
@@ -35,8 +36,7 @@ public abstract class AbstractDaoTest<T> {
     public abstract void findByUuid();
 
     @Test
-    public void update() {
-    }
+    public abstract void update();
 
     @Test
     public abstract void save();
@@ -44,10 +44,9 @@ public abstract class AbstractDaoTest<T> {
     @Test(expected = ExistDataBaseException.class)
     public abstract void saveExist();
 
-    @Test
-    public void delete() {
-    }
+    @Test(expected = NotExistDataBaseException.class)
+    public abstract void delete();
 
-    @Test
-    public abstract void clear();
+    @Test(expected = NotExistDataBaseException.class)
+    public abstract void deleteAll();
 }

@@ -2,6 +2,6 @@ package dao;
 
 import entities.ProductEntity;
 
-public class ProductDao extends AbstractDao<ProductEntity> {
+class ProductDao extends AbstractDao<ProductEntity> {
 
 }

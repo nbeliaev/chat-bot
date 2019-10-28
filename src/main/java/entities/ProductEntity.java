@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "product")
+@Table(name = "product", indexes = @Index(columnList = "description"))
 @SuppressWarnings("unused")
 public class ProductEntity implements Serializable {
     @Id

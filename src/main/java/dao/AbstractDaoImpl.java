@@ -1,11 +1,14 @@
 package dao;
 
+import exceptions.ExceptionUtil;
 import exceptions.ExistDataBaseException;
 import exceptions.NotExistDataBaseException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import utils.DBService;
 
+import javax.persistence.NoResultException;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,7 +23,7 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
         return interactWithDB((session -> {
             final T entity = session.get(clazz, uuid);
             if (entity == null) {
-                throw new NotExistDataBaseException("Not found");
+                throw new NotExistDataBaseException(String.format("Couldn't found object with uuid %s", uuid));
             }
             return entity;
         }));
@@ -34,11 +37,7 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
             final Root<T> root = criteria.from(clazz);
             final Predicate predicate = builder.like(root.get("description"), description);
             criteria.select(root).where(predicate);
-            final T entity = session.createQuery(criteria).getSingleResult();
-            if (entity == null) {
-                throw new NotExistDataBaseException("Not found");
-            }
-            return entity;
+            return session.createQuery(criteria).getSingleResult();
         });
     }
 
@@ -46,35 +45,24 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
     public void update(T entity) {
         interactWithDB((session -> {
             session.update(entity);
-            if (entity == null) {
-                throw new NotExistDataBaseException("Not found");
-            }
-            return entity;
+            return null;
         }));
     }
 
     @Override
     public void save(T entity) {
-        try (final Session session = factory.openSession()) {
-            session.beginTransaction();
+        interactWithDB(session -> {
             session.save(entity);
-            session.getTransaction().commit();
-        } catch (PersistenceException e) {
-            // TODO
-            throw new ExistDataBaseException(e.getMessage());
-        }
+            return null;
+        });
     }
 
     @Override
     public void delete(T entity) {
-        try (final Session session = factory.openSession()) {
-            session.beginTransaction();
+        interactWithDB(session -> {
             session.delete(entity);
-            session.getTransaction().commit();
-        } catch (PersistenceException e) {
-            // TODO
-            throw new NotExistDataBaseException(e.getMessage());
-        }
+            return null;
+        });
     }
 
     @Override
@@ -92,9 +80,10 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
             T result = executor.execute(session);
             session.getTransaction().commit();
             return result;
-        } catch (PersistenceException e) {
-            // TODO
+        } catch (OptimisticLockException | NoResultException e) {
             throw new NotExistDataBaseException(e.getMessage());
+        } catch (PersistenceException e) {
+            throw ExceptionUtil.convertException(e);
         }
     }
 }

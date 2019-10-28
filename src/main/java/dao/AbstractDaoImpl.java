@@ -1,7 +1,6 @@
 package dao;
 
 import exceptions.ExceptionUtil;
-import exceptions.ExistDataBaseException;
 import exceptions.NotExistDataBaseException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -30,12 +29,12 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
     }
 
     @Override
-    public T findByDescription(Class<T> clazz, String description) {
+    public T findByPattern(Class<T> clazz, String fieldName, String pattern) {
         return interactWithDB(session -> {
             final CriteriaBuilder builder = session.getCriteriaBuilder();
             final CriteriaQuery<T> criteria = builder.createQuery(clazz);
             final Root<T> root = criteria.from(clazz);
-            final Predicate predicate = builder.like(root.get("description"), description);
+            final Predicate predicate = builder.like(root.get(fieldName), pattern);
             criteria.select(root).where(predicate);
             return session.createQuery(criteria).getSingleResult();
         });
@@ -86,4 +85,5 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
             throw ExceptionUtil.convertException(e);
         }
     }
+
 }

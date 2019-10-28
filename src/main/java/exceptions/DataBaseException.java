@@ -1,8 +1,8 @@
 package exceptions;
 
-public class DataBaseException extends RuntimeException {
+class DataBaseException extends RuntimeException {
 
-    public DataBaseException(String msq) {
+    DataBaseException(String msq) {
         super(msq);
     }
 }

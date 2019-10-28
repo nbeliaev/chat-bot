@@ -35,12 +35,12 @@ public class ProductEntity implements Serializable {
         this.description = description;
     }
 
-    public String getId() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setId(String id) {
-        this.uuid = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getDescription() {

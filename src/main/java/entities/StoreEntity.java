@@ -69,4 +69,23 @@ public class StoreEntity implements Serializable {
         this.products = products;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StoreEntity that = (StoreEntity) o;
+
+        if (!uuid.equals(that.uuid)) return false;
+        if (!name.equals(that.name)) return false;
+        return address.equals(that.address);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uuid.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + address.hashCode();
+        return result;
+    }
 }

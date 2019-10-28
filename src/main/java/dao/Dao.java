@@ -4,7 +4,7 @@ public interface Dao<T> {
 
     T findByUuid(Class<T> clazz, String uuid);
 
-    T findByDescription(Class<T> clazz, String description);
+    T findByPattern(Class<T> clazz, String fieldName, String pattern);
 
     void update(T entity);
 

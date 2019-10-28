@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public abstract class AbstractDaoTest<T> {
+public abstract class AbstractDaoImplTest<T> {
     Dao<T> dao;
     final static String UUID_PRODUCT_1 = "uuid_product_1";
     final static ProductEntity PRODUCT_1 = new ProductEntity(UUID_PRODUCT_1, "product1");
@@ -16,7 +16,7 @@ public abstract class AbstractDaoTest<T> {
     private final static StoreEntity STORE_1 = new StoreEntity("uuid_store_1", "store1", "address1");
     private final static StoreEntity STORE_2 = new StoreEntity("uuid_store_2", "store2", "address2");
 
-    AbstractDaoTest(Dao<T> dao) {
+    AbstractDaoImplTest(Dao<T> dao) {
         this.dao = dao;
     }
 
@@ -37,6 +37,9 @@ public abstract class AbstractDaoTest<T> {
 
     @Test
     public abstract void update();
+
+    @Test(expected = NotExistDataBaseException.class)
+    public abstract void updateNotExist();
 
     @Test
     public abstract void save();

@@ -1,13 +1,25 @@
 package dao;
 
 import entities.ProductEntity;
+import exceptions.NotExistDataBaseException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ProductDaoTest extends AbstractDaoTest<ProductEntity> {
+public class ProductDaoTest extends AbstractDaoImplTest<ProductEntity> {
 
     public ProductDaoTest() {
-        super(new ProductDao());
+        super(new ProductDaoImpl());
+    }
+
+    @Test
+    public void findByDescription() {
+        final ProductEntity entity = dao.findByDescription(ProductEntity.class, "product1");
+        Assert.assertEquals(PRODUCT_1, entity);
+    }
+
+    @Test(expected = NotExistDataBaseException.class)
+    public void findByDescriptionNotExist() {
+        dao.findByDescription(ProductEntity.class, "product2");
     }
 
     @Override
@@ -21,6 +33,11 @@ public class ProductDaoTest extends AbstractDaoTest<ProductEntity> {
         dao.update(PRODUCT_1);
         ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getId());
         Assert.assertEquals(PRODUCT_1, product);
+    }
+
+    @Override
+    public void updateNotExist() {
+        dao.update(PRODUCT_2);
     }
 
     @Override

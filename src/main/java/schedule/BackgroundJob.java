@@ -1,5 +1,6 @@
 package schedule;
 
+import externaldata.DataReceiver;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -12,7 +13,7 @@ public class BackgroundJob implements Job {
         LocalDateTime localTime = LocalDateTime.now();
         System.out.println("Run QuartzJob at " + localTime.toString());
 
-        Connect1C mytask = new Connect1C();
-        mytask.doJob();
+        DataReceiver mytask = new DataReceiver();
+        mytask.getResourceData("stores");
     }
 }

@@ -11,7 +11,7 @@ public class StoreEntity implements Serializable {
     @Id
     @Column(name = "id", nullable = false, unique = true)
     private String uuid;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "address")
     private String address;

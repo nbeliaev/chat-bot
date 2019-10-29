@@ -1,6 +1,6 @@
 package schedule;
 
-import externaldata.DataReceiver;
+import database.externaldata.DataReceiver;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

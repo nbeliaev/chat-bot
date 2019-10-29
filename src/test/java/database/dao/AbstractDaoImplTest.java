@@ -1,7 +1,8 @@
-package dao;
+package database.dao;
 
-import entities.ProductEntity;
-import entities.StoreEntity;
+import database.dao.Dao;
+import database.entities.ProductEntity;
+import database.entities.StoreEntity;
 import exceptions.ExistDataBaseException;
 import exceptions.NotExistDataBaseException;
 import org.junit.After;

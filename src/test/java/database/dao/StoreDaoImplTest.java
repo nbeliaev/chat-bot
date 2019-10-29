@@ -1,6 +1,6 @@
-package dao;
+package database.dao;
 
-import entities.StoreEntity;
+import database.entities.StoreEntity;
 import exceptions.NotExistDataBaseException;
 import org.junit.Assert;
 import org.junit.Test;

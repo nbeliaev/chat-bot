@@ -1,6 +1,6 @@
-package dao;
+package database.dao;
 
-import entities.ProductEntity;
+import database.entities.ProductEntity;
 
 class ProductDaoImpl extends AbstractDaoImpl<ProductEntity> {
 

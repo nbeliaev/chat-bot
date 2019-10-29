@@ -1,6 +1,6 @@
-package dao;
+package database.dao;
 
-import entities.StoreEntity;
+import database.entities.StoreEntity;
 
 public class StoreDaoImpl extends AbstractDaoImpl<StoreEntity> {
 

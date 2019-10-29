@@ -1,4 +1,4 @@
-package externaldata;
+package database.externaldata;
 
 import configs.Config;
 import exceptions.ConnectionException;

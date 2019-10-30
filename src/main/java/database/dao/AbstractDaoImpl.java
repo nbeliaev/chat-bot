@@ -18,7 +18,7 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
     private final SessionFactory factory = DBService.getFactory();
 
     @Override
-    public T findByUuid(Class<T> clazz, String uuid) {
+    public T findByUuid(Class<T> clazz, String uuid) throws NotExistDataBaseException {
         return interactWithDB((session -> {
             final T entity = session.get(clazz, uuid);
             if (entity == null) {
@@ -29,7 +29,7 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
     }
 
     @Override
-    public T findByPattern(Class<T> clazz, String fieldName, String pattern) {
+    public T findByPattern(Class<T> clazz, String fieldName, String pattern) throws NotExistDataBaseException {
         return interactWithDB(session -> {
             final CriteriaBuilder builder = session.getCriteriaBuilder();
             final CriteriaQuery<T> criteria = builder.createQuery(clazz);

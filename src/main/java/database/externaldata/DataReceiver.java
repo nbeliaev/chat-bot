@@ -6,6 +6,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import utils.AuthUtil;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class DataReceiver {
@@ -24,23 +25,21 @@ public class DataReceiver {
     public DataReceiver() {
     }
 
-    public String getResourceData(String resource) {
+    public String getResourceData(String resource) throws ConnectionException {
         final Connection.Response response;
         try {
-            response = Jsoup.connect(Config.getProperty(Config.CONNECTION_1C))
+            response = Jsoup.connect(Config.getProperty(Config.CONNECTION_1C) + "/" + resource)
                     .header("Authorization", AuthUtil.getBasicAuthorization())
                     .timeout(timeOut)
                     .ignoreContentType(ignoreContentType)
                     .method(method)
                     .execute();
         } catch (IOException e) {
-            throw new ConnectionException("Couldn't connect to external data source");
+            throw new ConnectionException("Couldn't connect to 1C:Enterprise");
         }
-        // TODO check response status code
+        if (response.statusCode() != HttpServletResponse.SC_OK) {
+            throw new ConnectionException(String.format("Something was wrong. The response status is %s", response.statusCode()));
+        }
         return response.body();
-        // TODO to process json in another class
-        /*final StoreEntity[] stores = JsonParser.read(response.body(), StoreEntity[].class);
-        final StoreDaoImpl dao = new StoreDaoImpl();
-        Arrays.stream(stores).forEach(dao::save);*/
     }
 }

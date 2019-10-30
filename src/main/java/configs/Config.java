@@ -8,6 +8,7 @@ public class Config {
     public static final String USER_1C = "1C.user";
     public static final String PASSWORD_1C = "1C.password";
     public static final String CONNECTION_1C = "1C.connection-url";
+    public static final String UPDATE_FREQUENCY = "1C.update-frequency-in-minutes";
     private static Properties properties;
 
     public static String getProperty(String propertyName) {
@@ -18,7 +19,7 @@ public class Config {
     }
 
     private static void initProperties() {
-        try (final InputStream in = Config.class.getClassLoader().getResourceAsStream("app.properties")) {
+        try (final InputStream in = Config.class.getClassLoader().getResourceAsStream("1C.properties")) {
             if (in != null) {
                 properties = new Properties();
                 properties.load(in);

@@ -90,6 +90,18 @@
         </dependency>
 
         <dependency>
+            <groupId>com.google.api.client</groupId>
+            <artifactId>google-api-client-json</artifactId>
+            <version>1.2.3-alpha</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client</artifactId>
+            <version>1.23.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>9.3.0.M0</version>

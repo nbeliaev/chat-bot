@@ -28,7 +28,8 @@ public class DataReceiver {
     public String getResourceData(String resource) throws ConnectionException {
         final Connection.Response response;
         try {
-            response = Jsoup.connect(Config.getProperty(Config.CONNECTION_1C) + "/" + resource)
+            final String resourcePrefix = "/hs/bot/";
+            response = Jsoup.connect(Config.getProperty(Config.CONNECTION_1C) + resourcePrefix + resource)
                     .header("Authorization", AuthUtil.getBasicAuthorization())
                     .timeout(timeOut)
                     .ignoreContentType(ignoreContentType)

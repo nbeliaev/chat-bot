@@ -1,6 +1,5 @@
 package database.dao;
 
-import database.dao.Dao;
 import database.entities.ProductEntity;
 import database.entities.StoreEntity;
 import exceptions.ExistDataBaseException;
@@ -35,6 +34,9 @@ public abstract class AbstractDaoImplTest<T> {
 
     @Test
     public abstract void findByUuid();
+
+    @Test
+    public abstract void getAll();
 
     @Test
     public abstract void update();

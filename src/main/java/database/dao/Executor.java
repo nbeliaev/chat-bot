@@ -2,7 +2,9 @@ package database.dao;
 
 import org.hibernate.Session;
 
+import java.util.List;
+
 @FunctionalInterface
 public interface Executor<T> {
-    T execute(Session session);
+    List<T> execute(Session session);
 }

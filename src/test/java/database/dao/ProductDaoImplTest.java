@@ -5,6 +5,8 @@ import exceptions.NotExistDataBaseException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+
 public class ProductDaoImplTest extends AbstractDaoImplTest<ProductEntity> {
 
     public ProductDaoImplTest() {
@@ -34,6 +36,13 @@ public class ProductDaoImplTest extends AbstractDaoImplTest<ProductEntity> {
     public void findByUuid() {
         final ProductEntity product = dao.findByUuid(ProductEntity.class, UUID_PRODUCT_1);
         Assert.assertEquals(PRODUCT_1, product);
+    }
+
+    @Override
+    public void getAll() {
+        final List<ProductEntity> list = dao.getAll(ProductEntity.class);
+        final int expectedSize = 1;
+        Assert.assertEquals(expectedSize, list.size());
     }
 
     @Override

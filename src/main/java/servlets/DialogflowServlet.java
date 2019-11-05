@@ -1,7 +1,7 @@
 package servlets;
 
 import com.google.actions.api.App;
-import dialogflow.SimpleApp;
+import dialogflow.IntentsHandler;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,8 +14,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "SimpleServlet", urlPatterns = {"/"})
-public class SimpleServlet extends HttpServlet {
-    private App app = new SimpleApp();
+public class DialogflowServlet extends HttpServlet {
+    private App app = new IntentsHandler();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

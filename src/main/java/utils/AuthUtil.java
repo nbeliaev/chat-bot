@@ -11,4 +11,8 @@ public class AuthUtil {
                 Config.getProperty(Config.PASSWORD_1C);
         return "Basic " + new String(Base64.encodeBase64(login.getBytes()));
     }
+
+    private AuthUtil() {
+        throw new UnsupportedOperationException();
+    }
 }

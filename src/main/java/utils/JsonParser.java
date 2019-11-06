@@ -8,4 +8,8 @@ public class JsonParser {
         final Gson gson = new Gson();
         return gson.fromJson(json, clazz);
     }
+
+    private JsonParser() {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -20,6 +20,6 @@ public class DBService {
     }
 
     private DBService() {
-
+        throw new UnsupportedOperationException();
     }
 }

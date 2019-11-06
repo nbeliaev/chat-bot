@@ -18,7 +18,7 @@ public class ProductEntity implements Serializable {
     @Column(name = "active_ingredient")
     private String activeIngredient;
     @ManyToMany(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.DETACH, CascadeType.MERGE,
                     CascadeType.PERSIST, CascadeType.REFRESH

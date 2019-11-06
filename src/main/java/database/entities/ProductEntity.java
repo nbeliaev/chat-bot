@@ -4,16 +4,19 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name = "product", indexes = @Index(columnList = "description"))
+@Table(name = "product", indexes = @Index(columnList = "name, active_ingredient"))
 @SuppressWarnings("unused")
 public class ProductEntity implements Serializable {
     @Id
     @Column(name = "uuid")
     private String uuid;
-    @Column(name = "description", nullable = false)
-    private String description;
+    @Column(name = "name", nullable = false)
+    private String name;
+    @Column(name = "active_ingredient")
+    private String activeIngredient;
     @ManyToMany(
             fetch = FetchType.EAGER,
             cascade = {
@@ -30,9 +33,9 @@ public class ProductEntity implements Serializable {
     public ProductEntity() {
     }
 
-    public ProductEntity(String uuid, String description) {
+    public ProductEntity(String uuid, String name) {
         this.uuid = uuid;
-        this.description = description;
+        this.name = name;
     }
 
     public String getUuid() {
@@ -43,12 +46,12 @@ public class ProductEntity implements Serializable {
         this.uuid = uuid;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<StoreEntity> getStores() {
@@ -66,6 +69,14 @@ public class ProductEntity implements Serializable {
         stores.add(store);
     }
 
+    public String getActiveIngredient() {
+        return activeIngredient;
+    }
+
+    public void setActiveIngredient(String activeIngredient) {
+        this.activeIngredient = activeIngredient;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,13 +85,15 @@ public class ProductEntity implements Serializable {
         ProductEntity that = (ProductEntity) o;
 
         if (!uuid.equals(that.uuid)) return false;
-        return description.equals(that.description);
+        if (!name.equals(that.name)) return false;
+        return Objects.equals(activeIngredient, that.activeIngredient);
     }
 
     @Override
     public int hashCode() {
         int result = uuid.hashCode();
-        result = 31 * result + description.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (activeIngredient != null ? activeIngredient.hashCode() : 0);
         return result;
     }
 }

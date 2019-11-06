@@ -14,14 +14,14 @@ public class ProductDaoImplTest extends AbstractDaoImplTest<ProductEntity> {
     }
 
     @Test
-    public void findByDescription() {
-        final ProductEntity entity = dao.findByPattern(ProductEntity.class, "description", "product1");
+    public void findByPattern() {
+        final ProductEntity entity = dao.findByPattern(ProductEntity.class, "name", "product1");
         Assert.assertEquals(PRODUCT_1, entity);
     }
 
     @Test(expected = NotExistDataBaseException.class)
-    public void findByDescriptionNotExist() {
-        dao.findByPattern(ProductEntity.class, "description", "product2");
+    public void findByPatternNotExist() {
+        dao.findByPattern(ProductEntity.class, "name", "product2");
     }
 
     @Test
@@ -47,7 +47,7 @@ public class ProductDaoImplTest extends AbstractDaoImplTest<ProductEntity> {
 
     @Override
     public void update() {
-        PRODUCT_1.setDescription("dummy");
+        PRODUCT_1.setName("dummy");
         dao.update(PRODUCT_1);
         ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getUuid());
         Assert.assertEquals(PRODUCT_1, product);

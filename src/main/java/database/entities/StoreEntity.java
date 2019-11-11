@@ -88,4 +88,13 @@ public class StoreEntity implements Serializable {
         result = 31 * result + address.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "StoreEntity{" +
+                "uuid='" + uuid + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
 }

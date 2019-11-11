@@ -18,7 +18,7 @@ public class ProductEntity implements Serializable {
     @Column(name = "active_ingredient")
     private String activeIngredient;
     @ManyToMany(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = {
                     CascadeType.DETACH, CascadeType.MERGE,
                     CascadeType.PERSIST, CascadeType.REFRESH
@@ -36,6 +36,11 @@ public class ProductEntity implements Serializable {
     public ProductEntity(String uuid, String name) {
         this.uuid = uuid;
         this.name = name;
+    }
+
+    public ProductEntity(String uuid, String name, String activeIngredient) {
+        this(uuid, name);
+        this.activeIngredient = activeIngredient;
     }
 
     public String getUuid() {
@@ -95,5 +100,14 @@ public class ProductEntity implements Serializable {
         result = 31 * result + name.hashCode();
         result = 31 * result + (activeIngredient != null ? activeIngredient.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductEntity{" +
+                "uuid='" + uuid + '\'' +
+                ", name='" + name + '\'' +
+                ", activeIngredient='" + activeIngredient + '\'' +
+                '}';
     }
 }

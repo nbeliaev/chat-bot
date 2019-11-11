@@ -15,13 +15,20 @@ public class StoreDaoImplTest extends AbstractDaoImplTest<StoreEntity> {
 
     @Test
     public void findByName() {
-        final StoreEntity store = dao.findByPattern(StoreEntity.class, "name", "store1");
+        final StoreEntity store = dao.findByName(StoreEntity.class, STORE_1_NAME);
         Assert.assertEquals(STORE_1, store);
     }
 
     @Test(expected = NotExistDataBaseException.class)
     public void findByNameNotExist() {
-        dao.findByPattern(StoreEntity.class, "name", "store2");
+        dao.findByName(StoreEntity.class, "dummy");
+    }
+
+    @Override
+    public void findByPattern() {
+        final List<StoreEntity> stores = dao.findByPattern(StoreEntity.class, "address", STORE_1_ADDRESS);
+        final int expectedSize = 1;
+        Assert.assertEquals(expectedSize, stores.size());
     }
 
     @Override

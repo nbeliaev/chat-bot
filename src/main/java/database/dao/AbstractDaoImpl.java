@@ -4,6 +4,7 @@ import exceptions.ExceptionUtil;
 import exceptions.NotExistDataBaseException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.jetbrains.annotations.NotNull;
 import utils.DBService;
 
 import javax.persistence.NoResultException;
@@ -32,16 +33,20 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
     }
 
     @Override
-    public T findByPattern(Class<T> clazz, String fieldName, String pattern) throws NotExistDataBaseException {
+    public List<T> findByPattern(Class<T> clazz, String fieldName, String pattern) {
+        return interactWithDB(session -> {
+            final CriteriaQuery<T> criteria = getCriteriaQuery(clazz, session, pattern, fieldName);
+            return session.createQuery(criteria).getResultList();
+        });
+    }
+
+    @Override
+    public T findByName(Class<T> clazz, String name) throws NotExistDataBaseException {
         final List<T> list = interactWithDB(session -> {
-            final CriteriaBuilder builder = session.getCriteriaBuilder();
-            final CriteriaQuery<T> criteria = builder.createQuery(clazz);
-            final Root<T> root = criteria.from(clazz);
-            final Predicate predicate = builder.like(root.get(fieldName), pattern);
-            criteria.select(root).where(predicate);
+            final CriteriaQuery<T> criteria = getCriteriaQuery(clazz, session, name, "name");
             final T entity = session.createQuery(criteria).getSingleResult();
             if (entity == null) {
-                throw new NotExistDataBaseException(String.format("Couldn't found object with %s %s", fieldName, pattern));
+                throw new NotExistDataBaseException(String.format("Couldn't found object with name %s", name));
             }
             return Collections.singletonList(entity);
         });
@@ -103,6 +108,16 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
         } catch (PersistenceException e) {
             throw ExceptionUtil.convertException(e);
         }
+    }
+
+    @NotNull
+    private CriteriaQuery<T> getCriteriaQuery(Class<T> clazz, Session session, String pattern, String name) {
+        final CriteriaBuilder builder = session.getCriteriaBuilder();
+        final CriteriaQuery<T> criteria = builder.createQuery(clazz);
+        final Root<T> root = criteria.from(clazz);
+        final Predicate like = builder.like(root.get(name), "%" + pattern + "%");
+        criteria.select(root).where(like);
+        return criteria;
     }
 
 }

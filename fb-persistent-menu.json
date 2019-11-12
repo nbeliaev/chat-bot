@@ -11,18 +11,18 @@
                "call_to_actions":[
                 {
                "type":"postback",
-               "title":"Магазины",
-               "payload": "Магазины"
+               "title":"Аптеки",
+               "payload": "Аптеки"
             	},
 				{
                "type":"postback",
-               "title":"Аналоги",
-               "payload": "Аналоги"
+               "title":"Активные ингредиенты",
+               "payload": "Ингредиенты"
             	},
             	{
 				"type":"postback",
-               "title":"Товары",
-               "payload": "Товары"
+               "title":"Заказ",
+               "payload": "Заказ"
             	}
                ]
             },
@@ -30,6 +30,11 @@
                "type":"web_url",
                "title":"Сайт компании",
                "url":"https://facebook.com/"
+            },
+            {
+               "type":"postback",
+               "title":"Помощь",
+               "payload": "Помощь"
             }
          ]
       }

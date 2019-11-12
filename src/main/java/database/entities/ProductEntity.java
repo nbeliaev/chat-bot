@@ -20,8 +20,7 @@ public class ProductEntity implements Serializable {
     @ManyToMany(
             fetch = FetchType.EAGER,
             cascade = {
-                    CascadeType.DETACH, CascadeType.MERGE,
-                    CascadeType.PERSIST, CascadeType.REFRESH
+                    CascadeType.DETACH, CascadeType.MERGE
             })
     @JoinTable(
             name = "product_store",

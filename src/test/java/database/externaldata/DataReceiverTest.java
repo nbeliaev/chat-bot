@@ -9,6 +9,8 @@ public class DataReceiverTest {
     private static final DataReceiver dataReceiver = new DataReceiver();
     private static final String STORES_RESOURCE = "stores";
     private static final String PRODUCT_RESOURCE = "products";
+    private static final String PRODUCT_BALANCE_RESOURCE = "productsbalance";
+
 
     @Test
     public void getStores() throws ConnectionException {
@@ -19,6 +21,12 @@ public class DataReceiverTest {
     @Test
     public void getProducts() throws ConnectionException {
         final String data = dataReceiver.getResourceData(PRODUCT_RESOURCE);
+        assertFalse(data.isEmpty());
+    }
+
+    @Test
+    public void getProductsBalance() throws ConnectionException {
+        final String data = dataReceiver.getResourceData(PRODUCT_BALANCE_RESOURCE);
         assertFalse(data.isEmpty());
     }
 

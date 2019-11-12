@@ -26,6 +26,7 @@ public class BackgroundJob implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         processStores();
         processProducts();
+        processProductsBalance();
     }
 
     private void processStores() throws JobExecutionException {
@@ -34,12 +35,12 @@ public class BackgroundJob implements Job {
         final Dao<StoreEntity> dao = new StoreDaoImpl();
         Arrays.stream(stores).forEach(
                 // TODO: need to optimise
-                storeEntity -> {
+                entity -> {
                     try {
-                        dao.findByUuid(StoreEntity.class, storeEntity.getUuid());
-                        dao.update(storeEntity);
+                        dao.findByUuid(StoreEntity.class, entity.getUuid());
+                        dao.update(entity);
                     } catch (NotExistDataBaseException e) {
-                        dao.save(storeEntity);
+                        dao.save(entity);
                     }
                 });
     }
@@ -50,12 +51,29 @@ public class BackgroundJob implements Job {
         final Dao<ProductEntity> dao = new ProductDaoImpl();
         Arrays.stream(products).forEach(
                 // TODO: need to optimise
-                productEntity -> {
+                entity -> {
                     try {
-                        dao.findByUuid(ProductEntity.class, productEntity.getUuid());
-                        dao.update(productEntity);
+                        dao.findByUuid(ProductEntity.class, entity.getUuid());
+                        dao.update(entity);
                     } catch (NotExistDataBaseException e) {
-                        dao.save(productEntity);
+                        dao.save(entity);
+                    }
+                });
+    }
+
+    private void processProductsBalance() throws JobExecutionException {
+        final String json = getJson("productsbalance");
+        final ProductEntity[] products = JsonParser.read(json, ProductEntity[].class);
+        final Dao<ProductEntity> dao = new ProductDaoImpl();
+        Arrays.stream(products).forEach(
+                // TODO: need to optimise
+                entity -> {
+                    try {
+                        final ProductEntity persistedEntity = dao.findByUuid(ProductEntity.class, entity.getUuid());
+                        persistedEntity.setStores(entity.getStores());
+                        dao.update(persistedEntity);
+                    } catch (NotExistDataBaseException e) {
+                        throw new NotExistDataBaseException("not exist");
                     }
                 });
     }

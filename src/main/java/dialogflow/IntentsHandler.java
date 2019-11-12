@@ -17,7 +17,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class IntentsHandler extends DialogflowApp {
 
-    @ForIntent("Shops-all")
+    @ForIntent("Shops")
     public ActionResponse getAllShops(ActionRequest request) {
         final ResponseBuilder responseBuilder = getResponseBuilder(request);
         Dao<StoreEntity> dao = new StoreDaoImpl();
@@ -45,9 +45,15 @@ public class IntentsHandler extends DialogflowApp {
         final Dao<ProductEntity> dao = new ProductDaoImpl();
         final List<ProductEntity> analogs = dao.findByPattern(ProductEntity.class, "activeIngredient", activeIngredient);
         final StringBuilder stringBuilder = new StringBuilder();
-        analogs.forEach(entity -> {
-            stringBuilder.append(entity.getName())
+        analogs.forEach(product -> {
+            stringBuilder.append(product.getName())
                     .append("\n");
+            product.getStores().forEach(store -> {
+                stringBuilder
+                        .append("- ")
+                        .append(store.getName())
+                        .append("\n");
+            });
         });
         final SimpleResponse simpleResponse = new SimpleResponse();
         simpleResponse.setDisplayText(stringBuilder.toString());

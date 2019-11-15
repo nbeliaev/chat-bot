@@ -7,19 +7,23 @@
     <session-factory>
 
         <!-- JDBC Database connection settings -->
-        <property name="connection.driver_class">org.sqlite.JDBC</property>
-        <property name="connection.url">jdbc:sqlite:db/bot.db</property>
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/chat-bot</property>
 
 
         <!-- JDBC connection pool settings ... using built-in test pool -->
         <property name="connection.pool_size">1</property>
-        <property name="dialect">org.hibernate.dialect.SQLiteDialect</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">postgres</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">create-drop</property>
         <property name="current_session_context_class">thread</property>
 
         <mapping class="database.entities.StoreEntity"/>
         <mapping class="database.entities.ProductEntity"/>
+        <mapping class="database.entities.ProductPriceEntity"/>
+        <mapping class="database.entities.ProductBalanceEntity"/>
 
     </session-factory>
 

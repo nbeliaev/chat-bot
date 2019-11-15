@@ -24,17 +24,17 @@ public class ProductDaoImplTest extends AbstractDaoImplTest<ProductEntity> {
         dao.findByName(ProductEntity.class, "dummy");
     }
 
-    @Test
+    /*@Test
     public void storeCount() {
         PRODUCT_1.addStore(STORE_1);
         dao.update(PRODUCT_1);
         final ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getUuid());
         Assert.assertEquals(1, product.getStores().size());
-    }
+    }*/
 
     @Override
     public void findByPattern() {
-        PRODUCT_1.setActiveIngredient(PRODUCT_1_ANALOG);
+        PRODUCT_1.setSynonym(PRODUCT_1_ANALOG);
         dao.update(PRODUCT_1);
         final List<ProductEntity> analogs = dao.findByPattern(ProductEntity.class, "activeIngredient", PRODUCT_1_ANALOG);
         final int expectedSize = 1;
@@ -58,7 +58,7 @@ public class ProductDaoImplTest extends AbstractDaoImplTest<ProductEntity> {
     public void update() {
         PRODUCT_1.setName("dummy");
         dao.update(PRODUCT_1);
-        ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getUuid());
+        ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getExternalId());
         Assert.assertEquals(PRODUCT_1, product);
     }
 
@@ -70,7 +70,7 @@ public class ProductDaoImplTest extends AbstractDaoImplTest<ProductEntity> {
     @Override
     public void save() {
         dao.save(PRODUCT_2);
-        ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_2.getUuid());
+        ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_2.getExternalId());
         Assert.assertEquals(PRODUCT_2, product);
     }
 
@@ -82,13 +82,13 @@ public class ProductDaoImplTest extends AbstractDaoImplTest<ProductEntity> {
     @Override
     public void delete() {
         dao.delete(PRODUCT_1);
-        dao.findByUuid(ProductEntity.class, PRODUCT_1.getUuid());
+        dao.findByUuid(ProductEntity.class, PRODUCT_1.getExternalId());
     }
 
     @Override
     public void deleteAll() {
         dao.deleteAll();
-        ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getUuid());
+        ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getExternalId());
         Assert.assertNull(product);
     }
 

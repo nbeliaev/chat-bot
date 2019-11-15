@@ -37,7 +37,7 @@ public class BackgroundJob implements Job {
                 // TODO: need to optimise
                 entity -> {
                     try {
-                        dao.findByUuid(StoreEntity.class, entity.getUuid());
+                        dao.findByUuid(StoreEntity.class, entity.getExternal_id());
                         dao.update(entity);
                     } catch (NotExistDataBaseException e) {
                         dao.save(entity);
@@ -53,7 +53,7 @@ public class BackgroundJob implements Job {
                 // TODO: need to optimise
                 entity -> {
                     try {
-                        dao.findByUuid(ProductEntity.class, entity.getUuid());
+                        dao.findByUuid(ProductEntity.class, entity.getExternalId());
                         dao.update(entity);
                     } catch (NotExistDataBaseException e) {
                         dao.save(entity);
@@ -69,8 +69,8 @@ public class BackgroundJob implements Job {
                 // TODO: need to optimise
                 entity -> {
                     try {
-                        final ProductEntity persistedEntity = dao.findByUuid(ProductEntity.class, entity.getUuid());
-                        persistedEntity.setStores(entity.getStores());
+                        final ProductEntity persistedEntity = dao.findByUuid(ProductEntity.class, entity.getExternalId());
+                        //persistedEntity.setStores(entity.getStores());
                         dao.update(persistedEntity);
                     } catch (NotExistDataBaseException e) {
                         throw new NotExistDataBaseException("not exist");

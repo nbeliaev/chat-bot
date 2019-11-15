@@ -7,47 +7,58 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product", indexes = @Index(columnList = "name, active_ingredient"))
+@Table(name = "product", indexes = {@Index(columnList = "name"), @Index(columnList = "synonym")})
 @SuppressWarnings("unused")
 public class ProductEntity implements Serializable {
     @Id
-    @Column(name = "uuid")
-    private String uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "external_id", nullable = false, unique = true)
+    private String externalId;
+
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "active_ingredient")
-    private String activeIngredient;
-    @ManyToMany(
-            fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.DETACH, CascadeType.MERGE
-            })
-    @JoinTable(
-            name = "product_store",
-            joinColumns = @JoinColumn(name = "product_uuid"),
-            inverseJoinColumns = @JoinColumn(name = "store_uuid")
-    )
-    private List<StoreEntity> stores;
+
+    @Column(name = "synonym")
+    private String synonym;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    private List<ProductPriceEntity> prices;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    private List<ProductBalanceEntity> balances;
 
     public ProductEntity() {
     }
 
-    public ProductEntity(String uuid, String name) {
-        this.uuid = uuid;
+    public ProductEntity(String externalId, String name) {
+        this.externalId = externalId;
         this.name = name;
     }
 
-    public ProductEntity(String uuid, String name, String activeIngredient) {
-        this(uuid, name);
-        this.activeIngredient = activeIngredient;
+    public ProductEntity(String externalId, String name, String synonym) {
+        this(externalId, name);
+        this.synonym = synonym;
     }
 
-    public String getUuid() {
-        return uuid;
+    public int getId() {
+        return id;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String uuid) {
+        this.externalId = uuid;
     }
 
     public String getName() {
@@ -58,27 +69,42 @@ public class ProductEntity implements Serializable {
         this.name = name;
     }
 
-    public List<StoreEntity> getStores() {
-        return stores;
+    public String getSynonym() {
+        return synonym;
     }
 
-    public void setStores(List<StoreEntity> stores) {
-        this.stores = stores;
+    public void setSynonym(String activeIngredient) {
+        this.synonym = activeIngredient;
     }
 
-    public void addStore(StoreEntity store) {
-        if (stores == null) {
-            stores = new ArrayList<>();
+    public List<ProductPriceEntity> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(List<ProductPriceEntity> prices) {
+        this.prices = prices;
+    }
+
+    public void addPrice(ProductPriceEntity price) {
+        if (prices == null) {
+            prices = new ArrayList<>();
         }
-        stores.add(store);
+        prices.add(price);
     }
 
-    public String getActiveIngredient() {
-        return activeIngredient;
+    public List<ProductBalanceEntity> getBalances() {
+        return balances;
     }
 
-    public void setActiveIngredient(String activeIngredient) {
-        this.activeIngredient = activeIngredient;
+    public void setBalances(List<ProductBalanceEntity> balances) {
+        this.balances = balances;
+    }
+
+    public void addBalance(ProductBalanceEntity balance) {
+        if (balances == null) {
+            balances = new ArrayList<>();
+        }
+        balances.add(balance);
     }
 
     @Override
@@ -88,25 +114,26 @@ public class ProductEntity implements Serializable {
 
         ProductEntity that = (ProductEntity) o;
 
-        if (!uuid.equals(that.uuid)) return false;
+        if (!externalId.equals(that.externalId)) return false;
         if (!name.equals(that.name)) return false;
-        return Objects.equals(activeIngredient, that.activeIngredient);
+        return Objects.equals(synonym, that.synonym);
     }
 
     @Override
     public int hashCode() {
-        int result = uuid.hashCode();
+        int result = externalId.hashCode();
         result = 31 * result + name.hashCode();
-        result = 31 * result + (activeIngredient != null ? activeIngredient.hashCode() : 0);
+        result = 31 * result + (synonym != null ? synonym.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "ProductEntity{" +
-                "uuid='" + uuid + '\'' +
+                "id=" + id +
+                ", externalId='" + externalId + '\'' +
                 ", name='" + name + '\'' +
-                ", activeIngredient='" + activeIngredient + '\'' +
+                ", synonym='" + synonym + '\'' +
                 '}';
     }
 }

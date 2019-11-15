@@ -9,40 +9,54 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class StoreEntity implements Serializable {
     @Id
-    @Column(name = "id", nullable = false, unique = true)
-    private String uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "external_id", nullable = false, unique = true)
+    private String external_id;
+
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "address")
     private String address;
-    @ManyToMany(
-            cascade = {
-                    CascadeType.DETACH, CascadeType.MERGE,
-                    CascadeType.PERSIST, CascadeType.REFRESH
-            }
-    )
-    @JoinTable(
-            name = "product_store",
-            joinColumns = @JoinColumn(name = "store_uuid"),
-            inverseJoinColumns = @JoinColumn(name = "product_uuid")
-    )
-    private List<ProductEntity> products;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "store_id")
+    private List<ProductPriceEntity> prices;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "store_id")
+    private List<ProductBalanceEntity> balances;
 
     public StoreEntity() {
     }
 
-    public StoreEntity(String uuid, String name, String address) {
-        this.uuid = uuid;
-        this.name = name;
+    public StoreEntity(String external_id, String name, String address) {
+        this(external_id, name);
         this.address = address;
     }
 
-    public String getUuid() {
-        return uuid;
+    public StoreEntity(String external_id, String name) {
+        this.external_id = external_id;
+        this.name = name;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getExternal_id() {
+        return external_id;
+    }
+
+    public void setExternal_id(String external_id) {
+        this.external_id = external_id;
     }
 
     public String getName() {
@@ -61,12 +75,20 @@ public class StoreEntity implements Serializable {
         this.address = address;
     }
 
-    public List<ProductEntity> getProducts() {
-        return products;
+    public List<ProductPriceEntity> getPrices() {
+        return prices;
     }
 
-    public void setProducts(List<ProductEntity> products) {
-        this.products = products;
+    public void setPrices(List<ProductPriceEntity> prices) {
+        this.prices = prices;
+    }
+
+    public List<ProductBalanceEntity> getBalances() {
+        return balances;
+    }
+
+    public void setBalances(List<ProductBalanceEntity> balances) {
+        this.balances = balances;
     }
 
     @Override
@@ -76,14 +98,14 @@ public class StoreEntity implements Serializable {
 
         StoreEntity that = (StoreEntity) o;
 
-        if (!uuid.equals(that.uuid)) return false;
+        if (!external_id.equals(that.external_id)) return false;
         if (!name.equals(that.name)) return false;
         return address.equals(that.address);
     }
 
     @Override
     public int hashCode() {
-        int result = uuid.hashCode();
+        int result = external_id.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + address.hashCode();
         return result;
@@ -92,7 +114,7 @@ public class StoreEntity implements Serializable {
     @Override
     public String toString() {
         return "StoreEntity{" +
-                "uuid='" + uuid + '\'' +
+                "uuid='" + external_id + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 '}';

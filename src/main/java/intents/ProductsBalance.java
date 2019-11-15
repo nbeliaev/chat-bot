@@ -22,12 +22,12 @@ class ProductsBalance extends AbstractIntentResponse {
         analogs.forEach(product -> {
             stringBuilder.append(product.getName())
                     .append("\n");
-            product.getStores().forEach(store -> {
+            /*product.getStores().forEach(store -> {
                 stringBuilder
                         .append("- ")
                         .append(store.getName())
                         .append("\n");
-            });
+            });*/
         });
         return stringBuilder.toString();
     }

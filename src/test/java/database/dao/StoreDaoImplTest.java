@@ -48,7 +48,7 @@ public class StoreDaoImplTest extends AbstractDaoImplTest<StoreEntity> {
     public void update() {
         STORE_1.setName("dummy");
         dao.update(STORE_1);
-        StoreEntity store = dao.findByUuid(StoreEntity.class, STORE_1.getUuid());
+        StoreEntity store = dao.findByUuid(StoreEntity.class, STORE_1.getExternal_id());
         Assert.assertEquals(STORE_1, store);
     }
 
@@ -60,7 +60,7 @@ public class StoreDaoImplTest extends AbstractDaoImplTest<StoreEntity> {
     @Override
     public void save() {
         dao.save(STORE_2);
-        StoreEntity store = dao.findByUuid(StoreEntity.class, STORE_2.getUuid());
+        StoreEntity store = dao.findByUuid(StoreEntity.class, STORE_2.getExternal_id());
         Assert.assertEquals(STORE_2, store);
     }
 
@@ -72,13 +72,13 @@ public class StoreDaoImplTest extends AbstractDaoImplTest<StoreEntity> {
     @Override
     public void delete() {
         dao.delete(STORE_1);
-        dao.findByUuid(StoreEntity.class, STORE_1.getUuid());
+        dao.findByUuid(StoreEntity.class, STORE_1.getExternal_id());
     }
 
     @Override
     public void deleteAll() {
         dao.deleteAll();
-        StoreEntity store = dao.findByUuid(StoreEntity.class, STORE_1.getUuid());
+        StoreEntity store = dao.findByUuid(StoreEntity.class, STORE_1.getExternal_id());
         Assert.assertNull(store);
     }
 }

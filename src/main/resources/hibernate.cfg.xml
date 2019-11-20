@@ -22,8 +22,7 @@
 
         <mapping class="database.entities.StoreEntity"/>
         <mapping class="database.entities.ProductEntity"/>
-        <mapping class="database.entities.ProductPriceEntity"/>
-        <mapping class="database.entities.ProductBalanceEntity"/>
+        <mapping class="database.entities.PriceEntity"/>
 
     </session-factory>
 

@@ -1,39 +1,35 @@
 package database.dao;
 
 import database.entities.StoreEntity;
+import exceptions.ExistDataBaseException;
 import exceptions.NotExistDataBaseException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-public class StoreDaoImplTest extends AbstractDaoImplTest<StoreEntity> {
+public class StoreDaoTest extends AbstractDaoImplTest<StoreEntity> {
 
-    public StoreDaoImplTest() {
-        super(new StoreDaoImpl());
+    public StoreDaoTest() {
+        super(new StoreDao());
+    }
+
+    @Before
+    public void setUp() {
+        dao.save(STORE_1);
     }
 
     @Test
-    public void findByName() {
-        final StoreEntity store = dao.findByName(StoreEntity.class, STORE_1_NAME);
-        Assert.assertEquals(STORE_1, store);
-    }
-
-    @Test(expected = NotExistDataBaseException.class)
-    public void findByNameNotExist() {
-        dao.findByName(StoreEntity.class, "dummy");
-    }
-
-    @Override
     public void findByPattern() {
-        final List<StoreEntity> stores = dao.findByPattern(StoreEntity.class, "address", STORE_1_ADDRESS);
+        final List<StoreEntity> stores = dao.findByPattern(StoreEntity.class, "address", STORE_1.getAddress());
         final int expectedSize = 1;
         Assert.assertEquals(expectedSize, stores.size());
     }
 
     @Override
-    public void findByUuid() {
-        final StoreEntity store = dao.findByUuid(StoreEntity.class, UUID_STORE_1);
+    public void findById() {
+        final StoreEntity store = dao.findById(StoreEntity.class, STORE_1.getId());
         Assert.assertEquals(STORE_1, store);
     }
 
@@ -48,11 +44,11 @@ public class StoreDaoImplTest extends AbstractDaoImplTest<StoreEntity> {
     public void update() {
         STORE_1.setName("dummy");
         dao.update(STORE_1);
-        StoreEntity store = dao.findByUuid(StoreEntity.class, STORE_1.getExternal_id());
+        StoreEntity store = dao.findById(StoreEntity.class, STORE_1.getId());
         Assert.assertEquals(STORE_1, store);
     }
 
-    @Override
+    @Test(expected = NotExistDataBaseException.class)
     public void updateNotExist() {
         dao.update(STORE_2);
     }
@@ -60,11 +56,11 @@ public class StoreDaoImplTest extends AbstractDaoImplTest<StoreEntity> {
     @Override
     public void save() {
         dao.save(STORE_2);
-        StoreEntity store = dao.findByUuid(StoreEntity.class, STORE_2.getExternal_id());
+        StoreEntity store = dao.findById(StoreEntity.class, STORE_2.getId());
         Assert.assertEquals(STORE_2, store);
     }
 
-    @Override
+    @Test(expected = ExistDataBaseException.class)
     public void saveExist() {
         dao.save(STORE_1);
     }
@@ -72,13 +68,13 @@ public class StoreDaoImplTest extends AbstractDaoImplTest<StoreEntity> {
     @Override
     public void delete() {
         dao.delete(STORE_1);
-        dao.findByUuid(StoreEntity.class, STORE_1.getExternal_id());
+        dao.findById(StoreEntity.class, STORE_1.getId());
     }
 
     @Override
     public void deleteAll() {
         dao.deleteAll();
-        StoreEntity store = dao.findByUuid(StoreEntity.class, STORE_1.getExternal_id());
+        StoreEntity store = dao.findById(StoreEntity.class, STORE_1.getId());
         Assert.assertNull(store);
     }
 }

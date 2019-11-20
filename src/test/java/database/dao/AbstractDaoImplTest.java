@@ -1,34 +1,23 @@
 package database.dao;
 
+import database.entities.PriceEntity;
 import database.entities.ProductEntity;
 import database.entities.StoreEntity;
-import exceptions.ExistDataBaseException;
 import exceptions.NotExistDataBaseException;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public abstract class AbstractDaoImplTest<T> {
-    final static String UUID_PRODUCT_1 = "uuid_product_1";
-    final static String PRODUCT_1_NAME = "product1";
-    final static String PRODUCT_1_ANALOG = "analog1";
-    final static String UUID_STORE_1 = "uuid_store_1";
-    final static String STORE_1_NAME = "store1";
-    final static String STORE_1_ADDRESS = "address1";
-    final static ProductEntity PRODUCT_1 = new ProductEntity(UUID_PRODUCT_1, PRODUCT_1_NAME);
-    final static StoreEntity STORE_1 = new StoreEntity(UUID_STORE_1, STORE_1_NAME, STORE_1_ADDRESS);
-    final static ProductEntity PRODUCT_2 = new ProductEntity("uuid_product_2", "product2");
-    final static StoreEntity STORE_2 = new StoreEntity("uuid_store_2", "store2", "address2");
+    final ProductEntity PRODUCT_1 = new ProductEntity("uuid_product_1", "product1", "synonym1");
+    final StoreEntity STORE_1 = new StoreEntity("uuid_store_1", "store1", "address1");
+    final PriceEntity PRICE_1 = new PriceEntity(100.01);
+    final ProductEntity PRODUCT_2 = new ProductEntity("uuid_product_2", "product2");
+    final StoreEntity STORE_2 = new StoreEntity("uuid_store_2", "store2", "address2");
+    final PriceEntity PRICE_2 = new PriceEntity(100.02);
     Dao<T> dao;
 
     AbstractDaoImplTest(Dao<T> dao) {
         this.dao = dao;
-    }
-
-    @Before
-    public void setUp() {
-        dao.save((T) STORE_1);
-        dao.save((T) PRODUCT_1);
     }
 
     @After
@@ -37,10 +26,7 @@ public abstract class AbstractDaoImplTest<T> {
     }
 
     @Test
-    public abstract void findByPattern();
-
-    @Test
-    public abstract void findByUuid();
+    public abstract void findById();
 
     @Test
     public abstract void getAll();
@@ -48,14 +34,8 @@ public abstract class AbstractDaoImplTest<T> {
     @Test
     public abstract void update();
 
-    @Test(expected = NotExistDataBaseException.class)
-    public abstract void updateNotExist();
-
     @Test
     public abstract void save();
-
-    @Test(expected = ExistDataBaseException.class)
-    public abstract void saveExist();
 
     @Test(expected = NotExistDataBaseException.class)
     public abstract void delete();

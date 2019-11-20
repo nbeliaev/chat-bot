@@ -24,13 +24,11 @@ public class ProductEntity implements Serializable {
     @Column(name = "synonym")
     private String synonym;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE)
     @JoinColumn(name = "product_id")
-    private List<ProductPriceEntity> prices;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
-    private List<ProductBalanceEntity> balances;
+    private List<PriceEntity> prices;
 
     public ProductEntity() {
     }
@@ -77,34 +75,20 @@ public class ProductEntity implements Serializable {
         this.synonym = activeIngredient;
     }
 
-    public List<ProductPriceEntity> getPrices() {
+    public List<PriceEntity> getPrices() {
         return prices;
     }
 
-    public void setPrices(List<ProductPriceEntity> prices) {
+    public void setPrices(List<PriceEntity> prices) {
         this.prices = prices;
     }
 
-    public void addPrice(ProductPriceEntity price) {
+    public void addPrice(PriceEntity price) {
         if (prices == null) {
             prices = new ArrayList<>();
         }
         prices.add(price);
-    }
-
-    public List<ProductBalanceEntity> getBalances() {
-        return balances;
-    }
-
-    public void setBalances(List<ProductBalanceEntity> balances) {
-        this.balances = balances;
-    }
-
-    public void addBalance(ProductBalanceEntity balance) {
-        if (balances == null) {
-            balances = new ArrayList<>();
-        }
-        balances.add(balance);
+        price.setProduct(this);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package database.dao;
 
 import exceptions.ExceptionUtil;
+import exceptions.ExistDataBaseException;
 import exceptions.NotExistDataBaseException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,11 +22,11 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
     private final SessionFactory factory = DBService.getFactory();
 
     @Override
-    public T findByUuid(Class<T> clazz, String uuid) throws NotExistDataBaseException {
+    public T findById(Class<T> clazz, int id) throws NotExistDataBaseException {
         final List<T> list = interactWithDB((session -> {
-            final T entity = session.get(clazz, uuid);
+            final T entity = session.get(clazz, id);
             if (entity == null) {
-                throw new NotExistDataBaseException(String.format("Couldn't found object with uuid %s", uuid));
+                throw new NotExistDataBaseException(String.format("Couldn't found object with uuid %s", id));
             }
             return Collections.singletonList(entity);
         }));
@@ -73,7 +74,7 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
     }
 
     @Override
-    public void save(T entity) {
+    public void save(T entity) throws ExistDataBaseException {
         interactWithDB(session -> {
             session.save(entity);
             return null;
@@ -91,6 +92,7 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
     @Override
     public void deleteAll() {
         interactWithDB((session) -> {
+            session.createQuery("DELETE FROM PriceEntity ").executeUpdate();
             session.createQuery("DELETE FROM ProductEntity").executeUpdate();
             session.createQuery("DELETE FROM StoreEntity").executeUpdate();
             return null;

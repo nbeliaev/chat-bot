@@ -1,12 +1,13 @@
 package database.dao;
 
+import exceptions.ExistDataBaseException;
 import exceptions.NotExistDataBaseException;
 
 import java.util.List;
 
 public interface Dao<T> {
 
-    T findByUuid(Class<T> clazz, String uuid) throws NotExistDataBaseException;
+    T findById(Class<T> clazz, int id) throws NotExistDataBaseException;
 
     List<T> findByPattern(Class<T> clazz, String fieldName, String pattern);
 
@@ -16,7 +17,7 @@ public interface Dao<T> {
 
     void update(T entity);
 
-    void save(T entity);
+    void save(T entity) throws ExistDataBaseException;
 
     void delete(T entity);
 

@@ -2,6 +2,7 @@ package database.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,13 +23,11 @@ public class StoreEntity implements Serializable {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE)
     @JoinColumn(name = "store_id")
-    private List<ProductPriceEntity> prices;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "store_id")
-    private List<ProductBalanceEntity> balances;
+    private List<PriceEntity> prices;
 
     public StoreEntity() {
     }
@@ -38,7 +37,7 @@ public class StoreEntity implements Serializable {
         this.address = address;
     }
 
-    public StoreEntity(String external_id, String name) {
+    private StoreEntity(String external_id, String name) {
         this.external_id = external_id;
         this.name = name;
     }
@@ -75,20 +74,20 @@ public class StoreEntity implements Serializable {
         this.address = address;
     }
 
-    public List<ProductPriceEntity> getPrices() {
+    public List<PriceEntity> getPrices() {
         return prices;
     }
 
-    public void setPrices(List<ProductPriceEntity> prices) {
+    public void setPrices(List<PriceEntity> prices) {
         this.prices = prices;
     }
 
-    public List<ProductBalanceEntity> getBalances() {
-        return balances;
-    }
-
-    public void setBalances(List<ProductBalanceEntity> balances) {
-        this.balances = balances;
+    public void addPrice(PriceEntity price) {
+        if (prices == null) {
+            prices = new ArrayList<>();
+        }
+        prices.add(price);
+        price.setStore(this);
     }
 
     @Override

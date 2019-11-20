@@ -1,8 +1,8 @@
 package backgroundjob;
 
 import database.dao.Dao;
-import database.dao.ProductDaoImpl;
-import database.dao.StoreDaoImpl;
+import database.dao.ProductDao;
+import database.dao.StoreDao;
 import database.entities.ProductEntity;
 import database.entities.StoreEntity;
 import database.externaldata.DataReceiver;
@@ -32,12 +32,12 @@ public class BackgroundJob implements Job {
     private void processStores() throws JobExecutionException {
         final String json = getJson("stores");
         final StoreEntity[] stores = JsonParser.read(json, StoreEntity[].class);
-        final Dao<StoreEntity> dao = new StoreDaoImpl();
+        final Dao<StoreEntity> dao = new StoreDao();
         Arrays.stream(stores).forEach(
                 // TODO: need to optimise
                 entity -> {
                     try {
-                        dao.findByUuid(StoreEntity.class, entity.getExternal_id());
+                        dao.findByPattern(StoreEntity.class, "external_id", entity.getExternal_id());
                         dao.update(entity);
                     } catch (NotExistDataBaseException e) {
                         dao.save(entity);
@@ -48,12 +48,12 @@ public class BackgroundJob implements Job {
     private void processProducts() throws JobExecutionException {
         final String json = getJson("products");
         final ProductEntity[] products = JsonParser.read(json, ProductEntity[].class);
-        final Dao<ProductEntity> dao = new ProductDaoImpl();
+        final Dao<ProductEntity> dao = new ProductDao();
         Arrays.stream(products).forEach(
                 // TODO: need to optimise
                 entity -> {
                     try {
-                        dao.findByUuid(ProductEntity.class, entity.getExternalId());
+                        dao.findByPattern(ProductEntity.class, "external_id", entity.getExternalId());
                         dao.update(entity);
                     } catch (NotExistDataBaseException e) {
                         dao.save(entity);
@@ -64,14 +64,14 @@ public class BackgroundJob implements Job {
     private void processProductsBalance() throws JobExecutionException {
         final String json = getJson("productsbalance");
         final ProductEntity[] products = JsonParser.read(json, ProductEntity[].class);
-        final Dao<ProductEntity> dao = new ProductDaoImpl();
+        final Dao<ProductEntity> dao = new ProductDao();
         Arrays.stream(products).forEach(
                 // TODO: need to optimise
                 entity -> {
                     try {
-                        final ProductEntity persistedEntity = dao.findByUuid(ProductEntity.class, entity.getExternalId());
+                        //final ProductEntity persistedEntity = dao.findByPattern(ProductEntity.class, "external_id", entity.getExternalId());
                         //persistedEntity.setStores(entity.getStores());
-                        dao.update(persistedEntity);
+                       // dao.update(persistedEntity);
                     } catch (NotExistDataBaseException e) {
                         throw new NotExistDataBaseException("not exist");
                     }

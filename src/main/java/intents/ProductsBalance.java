@@ -2,7 +2,7 @@ package intents;
 
 import com.google.actions.api.ActionRequest;
 import database.dao.Dao;
-import database.dao.ProductDaoImpl;
+import database.dao.ProductDao;
 import database.entities.ProductEntity;
 
 import java.util.List;
@@ -16,7 +16,7 @@ class ProductsBalance extends AbstractIntentResponse {
     @Override
     String prepareTextMessage() {
         final String activeIngredient = (String) request.getParameter("activeIngredient");
-        final Dao<ProductEntity> dao = new ProductDaoImpl();
+        final Dao<ProductEntity> dao = new ProductDao();
         final List<ProductEntity> analogs = dao.findByPattern(ProductEntity.class, "activeIngredient", activeIngredient);
         final StringBuilder stringBuilder = new StringBuilder();
         analogs.forEach(product -> {

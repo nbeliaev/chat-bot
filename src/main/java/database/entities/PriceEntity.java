@@ -11,16 +11,16 @@ public class PriceEntity implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
-    @Column(name = "price")
-    private double price;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private StoreEntity store;
+
+    @Column(name = "price")
+    private double price;
 
     public PriceEntity() {
     }
@@ -68,10 +68,8 @@ public class PriceEntity implements Serializable {
 
         PriceEntity that = (PriceEntity) o;
 
-        if (uuid != that.uuid) return false;
-        if (price != that.price) return false;
-        if (!product.equals(that.product)) return false;
-        return store.equals(that.store);
+        if (Double.compare(that.price, price) != 0) return false;
+        return uuid.equals(that.uuid);
     }
 
     @Override
@@ -81,8 +79,16 @@ public class PriceEntity implements Serializable {
         result = uuid.hashCode();
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + product.hashCode();
-        result = 31 * result + store.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PriceEntity{" +
+                "uuid='" + uuid + '\'' +
+                ", price=" + price +
+                ", product=" + product +
+                ", store=" + store +
+                '}';
     }
 }

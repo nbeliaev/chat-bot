@@ -89,17 +89,7 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
         });
     }
 
-    @Override
-    public void deleteAll() {
-        interactWithDB((session) -> {
-            session.createQuery("DELETE FROM PriceEntity ").executeUpdate();
-            session.createQuery("DELETE FROM ProductEntity").executeUpdate();
-            session.createQuery("DELETE FROM StoreEntity").executeUpdate();
-            return null;
-        });
-    }
-
-    private List<T> interactWithDB(Executor<T> executor) {
+    List<T> interactWithDB(Executor<T> executor) {
         try (final Session session = factory.openSession()) {
             session.beginTransaction();
             List<T> result = executor.execute(session);

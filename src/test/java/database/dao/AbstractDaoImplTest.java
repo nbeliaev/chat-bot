@@ -4,7 +4,6 @@ import database.entities.PriceEntity;
 import database.entities.ProductEntity;
 import database.entities.StoreEntity;
 import exceptions.NotExistDataBaseException;
-import org.junit.After;
 import org.junit.Test;
 
 public abstract class AbstractDaoImplTest<T> {
@@ -27,11 +26,6 @@ public abstract class AbstractDaoImplTest<T> {
 
     AbstractDaoImplTest(Dao<T> dao) {
         this.dao = dao;
-    }
-
-    @After
-    public void tearDown() {
-        dao.deleteAll();
     }
 
     @Test

@@ -3,6 +3,7 @@ package database.dao;
 import database.entities.ProductEntity;
 import exceptions.ExistDataBaseException;
 import exceptions.NotExistDataBaseException;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +19,11 @@ public class ProductDaoTest extends AbstractDaoImplTest<ProductEntity> {
     @Before
     public void setUp() {
         dao.save(PRODUCT_1);
+    }
+
+    @After
+    public void tearDown() {
+        dao.deleteAll();
     }
 
     @Test

@@ -36,7 +36,7 @@ public class DataReceiver {
                     .method(method)
                     .execute();
         } catch (IOException e) {
-            throw new ConnectionException("Couldn't connect to 1C:Enterprise");
+            throw new ConnectionException(String.format("Couldn't connect to 1C:Enterprise: the reason is %s", e.getMessage()));
         }
         if (response.statusCode() != HttpServletResponse.SC_OK) {
             throw new ConnectionException(String.format("Something was wrong. The response status is %s", response.statusCode()));

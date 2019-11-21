@@ -1,12 +1,15 @@
 package database.dao;
 
 import database.entities.PriceEntity;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 
 import java.util.List;
 
 public class PriceDaoTest extends AbstractDaoImplTest<PriceEntity> {
+    private final static ProductDao productDao = new ProductDao();
+    private final static StoreDao storeDao = new StoreDao();
 
     public PriceDaoTest() {
         super(new PriceDao());
@@ -14,13 +17,18 @@ public class PriceDaoTest extends AbstractDaoImplTest<PriceEntity> {
 
     @Before
     public void setUp() {
-        final ProductDao productDao = new ProductDao();
         productDao.save(PRODUCT_1);
-        final StoreDao storeDao = new StoreDao();
         storeDao.save(STORE_1);
         STORE_1.addPrice(PRICE_1);
         PRODUCT_1.addPrice(PRICE_1);
         dao.save(PRICE_1);
+    }
+
+    @After
+    public void tearDown() {
+        dao.deleteAll();
+        productDao.deleteAll();
+        storeDao.deleteAll();
     }
 
     @Override

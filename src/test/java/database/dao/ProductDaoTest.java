@@ -31,7 +31,7 @@ public class ProductDaoTest extends AbstractDaoImplTest<ProductEntity> {
 
     @Override
     public void findById() {
-        final ProductEntity product = dao.findById(ProductEntity.class, PRODUCT_1.getId());
+        final ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getUuid());
         Assert.assertEquals(PRODUCT_1, product);
     }
 
@@ -46,7 +46,7 @@ public class ProductDaoTest extends AbstractDaoImplTest<ProductEntity> {
     public void update() {
         PRODUCT_1.setName("dummy");
         dao.update(PRODUCT_1);
-        ProductEntity product = dao.findById(ProductEntity.class, PRODUCT_1.getId());
+        ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getUuid());
         Assert.assertEquals(PRODUCT_1, product);
     }
 
@@ -58,7 +58,7 @@ public class ProductDaoTest extends AbstractDaoImplTest<ProductEntity> {
     @Override
     public void save() {
         dao.save(PRODUCT_2);
-        ProductEntity product = dao.findById(ProductEntity.class, PRODUCT_2.getId());
+        ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_2.getUuid());
         Assert.assertEquals(PRODUCT_2, product);
     }
 
@@ -70,13 +70,13 @@ public class ProductDaoTest extends AbstractDaoImplTest<ProductEntity> {
     @Override
     public void delete() {
         dao.delete(PRODUCT_1);
-        dao.findById(ProductEntity.class, PRODUCT_1.getId());
+        dao.findByUuid(ProductEntity.class, PRODUCT_1.getUuid());
     }
 
     @Override
     public void deleteAll() {
         dao.deleteAll();
-        ProductEntity product = dao.findById(ProductEntity.class, PRODUCT_1.getId());
+        ProductEntity product = dao.findByUuid(ProductEntity.class, PRODUCT_1.getUuid());
         Assert.assertNull(product);
     }
 }

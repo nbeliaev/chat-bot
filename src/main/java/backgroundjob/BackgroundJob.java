@@ -26,7 +26,7 @@ public class BackgroundJob implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         processStores();
         processProducts();
-        processProductsBalance();
+        processPrices();
     }
 
     private void processStores() throws JobExecutionException {
@@ -37,7 +37,7 @@ public class BackgroundJob implements Job {
                 // TODO: need to optimise
                 entity -> {
                     try {
-                        dao.findByPattern(StoreEntity.class, "external_id", entity.getExternal_id());
+                        dao.findByUuid(StoreEntity.class, entity.getUuid());
                         dao.update(entity);
                     } catch (NotExistDataBaseException e) {
                         dao.save(entity);
@@ -53,7 +53,7 @@ public class BackgroundJob implements Job {
                 // TODO: need to optimise
                 entity -> {
                     try {
-                        dao.findByPattern(ProductEntity.class, "external_id", entity.getExternalId());
+                        dao.findByUuid(ProductEntity.class, entity.getUuid());
                         dao.update(entity);
                     } catch (NotExistDataBaseException e) {
                         dao.save(entity);
@@ -61,8 +61,8 @@ public class BackgroundJob implements Job {
                 });
     }
 
-    private void processProductsBalance() throws JobExecutionException {
-        final String json = getJson("productsbalance");
+    private void processPrices() throws JobExecutionException {
+        final String json = getJson("prices");
         final ProductEntity[] products = JsonParser.read(json, ProductEntity[].class);
         final Dao<ProductEntity> dao = new ProductDao();
         Arrays.stream(products).forEach(
@@ -71,7 +71,7 @@ public class BackgroundJob implements Job {
                     try {
                         //final ProductEntity persistedEntity = dao.findByPattern(ProductEntity.class, "external_id", entity.getExternalId());
                         //persistedEntity.setStores(entity.getStores());
-                       // dao.update(persistedEntity);
+                        // dao.update(persistedEntity);
                     } catch (NotExistDataBaseException e) {
                         throw new NotExistDataBaseException("not exist");
                     }

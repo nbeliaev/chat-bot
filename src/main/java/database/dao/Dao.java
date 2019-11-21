@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface Dao<T> {
 
-    T findById(Class<T> clazz, int id) throws NotExistDataBaseException;
+    T findByUuid(Class<T> clazz, String id) throws NotExistDataBaseException;
 
     List<T> findByPattern(Class<T> clazz, String fieldName, String pattern);
 

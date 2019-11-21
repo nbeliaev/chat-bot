@@ -8,9 +8,8 @@ import java.io.Serializable;
 @SuppressWarnings("unused")
 public class PriceEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "uuid")
+    private String uuid;
 
     @Column(name = "price")
     private double price;
@@ -30,12 +29,12 @@ public class PriceEntity implements Serializable {
         this.price = price;
     }
 
-    public int getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public double getPrice() {
@@ -69,7 +68,7 @@ public class PriceEntity implements Serializable {
 
         PriceEntity that = (PriceEntity) o;
 
-        if (id != that.id) return false;
+        if (uuid != that.uuid) return false;
         if (price != that.price) return false;
         if (!product.equals(that.product)) return false;
         return store.equals(that.store);
@@ -77,18 +76,13 @@ public class PriceEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = (int) (31 * result + price);
+        int result;
+        long temp;
+        result = uuid.hashCode();
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + product.hashCode();
         result = 31 * result + store.hashCode();
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductPriceEntity{" +
-                "id=" + id +
-                ", price=" + price +
-                '}';
     }
 }

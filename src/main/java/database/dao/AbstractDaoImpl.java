@@ -22,11 +22,11 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
     private final SessionFactory factory = DBService.getFactory();
 
     @Override
-    public T findById(Class<T> clazz, int id) throws NotExistDataBaseException {
+    public T findByUuid(Class<T> clazz, String uuid) throws NotExistDataBaseException {
         final List<T> list = interactWithDB((session -> {
-            final T entity = session.get(clazz, id);
+            final T entity = session.get(clazz, uuid);
             if (entity == null) {
-                throw new NotExistDataBaseException(String.format("Couldn't found object with uuid %s", id));
+                throw new NotExistDataBaseException(String.format("Couldn't found object with uuid %s", uuid));
             }
             return Collections.singletonList(entity);
         }));

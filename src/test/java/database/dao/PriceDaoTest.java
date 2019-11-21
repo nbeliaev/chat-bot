@@ -25,7 +25,7 @@ public class PriceDaoTest extends AbstractDaoImplTest<PriceEntity> {
 
     @Override
     public void findById() {
-        final PriceEntity price = dao.findById(PriceEntity.class, PRICE_1.getId());
+        final PriceEntity price = dao.findByUuid(PriceEntity.class, PRICE_1.getUuid());
         Assert.assertEquals(PRICE_1, price);
     }
 
@@ -40,7 +40,7 @@ public class PriceDaoTest extends AbstractDaoImplTest<PriceEntity> {
     public void update() {
         PRICE_1.setPrice(200.02);
         dao.update(PRICE_1);
-        Assert.assertEquals(PRICE_1, dao.findById(PriceEntity.class, PRICE_1.getId()));
+        Assert.assertEquals(PRICE_1, dao.findByUuid(PriceEntity.class, PRICE_1.getUuid()));
     }
 
     @Override
@@ -48,19 +48,19 @@ public class PriceDaoTest extends AbstractDaoImplTest<PriceEntity> {
         PRODUCT_1.addPrice(PRICE_2);
         STORE_1.addPrice(PRICE_2);
         dao.save(PRICE_2);
-        Assert.assertEquals(PRICE_2, dao.findById(PriceEntity.class, PRICE_2.getId()));
+        Assert.assertEquals(PRICE_2, dao.findByUuid(PriceEntity.class, PRICE_2.getUuid()));
     }
 
     @Override
     public void delete() {
         dao.delete(PRICE_1);
-        dao.findById(PriceEntity.class, PRICE_1.getId());
+        dao.findByUuid(PriceEntity.class, PRICE_1.getUuid());
     }
 
     @Override
     public void deleteAll() {
         dao.deleteAll();
-        final PriceEntity price = dao.findById(PriceEntity.class, PRICE_1.getId());
+        final PriceEntity price = dao.findByUuid(PriceEntity.class, PRICE_1.getUuid());
         Assert.assertNull(price);
     }
 }

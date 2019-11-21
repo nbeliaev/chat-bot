@@ -10,12 +10,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class StoreEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
-    @Column(name = "external_id", nullable = false, unique = true)
-    private String external_id;
+    @Column(name = "uuid")
+    private String uuid;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -38,24 +34,15 @@ public class StoreEntity implements Serializable {
     }
 
     private StoreEntity(String external_id, String name) {
-        this.external_id = external_id;
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getExternal_id() {
-        return external_id;
-    }
-
-    public void setExternal_id(String external_id) {
-        this.external_id = external_id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -97,15 +84,13 @@ public class StoreEntity implements Serializable {
 
         StoreEntity that = (StoreEntity) o;
 
-        if (!external_id.equals(that.external_id)) return false;
         if (!name.equals(that.name)) return false;
         return address.equals(that.address);
     }
 
     @Override
     public int hashCode() {
-        int result = external_id.hashCode();
-        result = 31 * result + name.hashCode();
+        int result = name.hashCode();
         result = 31 * result + address.hashCode();
         return result;
     }
@@ -113,7 +98,7 @@ public class StoreEntity implements Serializable {
     @Override
     public String toString() {
         return "StoreEntity{" +
-                "uuid='" + external_id + '\'' +
+                "uuid='" + uuid + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 '}';

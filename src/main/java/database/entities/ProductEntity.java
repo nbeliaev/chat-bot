@@ -7,16 +7,17 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product", indexes = {@Index(columnList = "name"), @Index(columnList = "synonym")})
+@Table(
+        name = "product",
+        indexes = {
+                @Index(columnList = "name"),
+                @Index(columnList = "synonym")
+        })
 @SuppressWarnings("unused")
 public class ProductEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
-    @Column(name = "external_id", nullable = false, unique = true)
-    private String externalId;
+    @Column(name = "uuid")
+    private String uuid;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -33,30 +34,21 @@ public class ProductEntity implements Serializable {
     public ProductEntity() {
     }
 
-    public ProductEntity(String externalId, String name) {
-        this.externalId = externalId;
+    public ProductEntity(String name) {
         this.name = name;
     }
 
-    public ProductEntity(String externalId, String name, String synonym) {
-        this(externalId, name);
+    public ProductEntity(String name, String synonym) {
+        this(name);
         this.synonym = synonym;
     }
 
-    public int getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getExternalId() {
-        return externalId;
-    }
-
-    public void setExternalId(String uuid) {
-        this.externalId = uuid;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -98,15 +90,13 @@ public class ProductEntity implements Serializable {
 
         ProductEntity that = (ProductEntity) o;
 
-        if (!externalId.equals(that.externalId)) return false;
         if (!name.equals(that.name)) return false;
         return Objects.equals(synonym, that.synonym);
     }
 
     @Override
     public int hashCode() {
-        int result = externalId.hashCode();
-        result = 31 * result + name.hashCode();
+        int result = name.hashCode();
         result = 31 * result + (synonym != null ? synonym.hashCode() : 0);
         return result;
     }
@@ -114,8 +104,7 @@ public class ProductEntity implements Serializable {
     @Override
     public String toString() {
         return "ProductEntity{" +
-                "id=" + id +
-                ", externalId='" + externalId + '\'' +
+                "uuid=" + uuid +
                 ", name='" + name + '\'' +
                 ", synonym='" + synonym + '\'' +
                 '}';

@@ -14,10 +14,16 @@ public class IntentsHandler extends DialogflowApp {
         return shopsSchedule.getResponse();
     }
 
-    @ForIntent("Active Ingredient")
-    public ActionResponse getProductListByActiveIngredient(ActionRequest request) {
-        final ProductsBalance productsBalance = new ProductsBalance(request);
-        return productsBalance.getResponse();
+    @ForIntent("Product List")
+    public ActionResponse getProductList(ActionRequest request) {
+        final ProductList productList = new ProductList(request);
+        return productList.getResponse();
+    }
+
+    @ForIntent("Particular Product")
+    public ActionResponse getProduct(ActionRequest request) {
+        final ParticularProduct product = new ParticularProduct(request);
+        return product.getResponse();
     }
 
     @ForIntent("Customer Order Confirm")

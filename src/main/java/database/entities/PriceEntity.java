@@ -15,7 +15,7 @@ public class PriceEntity implements Serializable {
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id")
     private StoreEntity store;
 
@@ -87,8 +87,6 @@ public class PriceEntity implements Serializable {
         return "PriceEntity{" +
                 "uuid='" + uuid + '\'' +
                 ", price=" + price +
-                ", product=" + product +
-                ", store=" + store +
                 '}';
     }
 }

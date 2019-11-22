@@ -19,14 +19,10 @@ import utils.JsonParser;
 import java.util.Arrays;
 
 public class BackgroundJob implements Job {
-    private final DataReceiver dataReceiver;
     private static final String STORES_RESOURCE = "stores";
     private static final String PRODUCT_RESOURCE = "products";
     private static final String PRICES_RESOURCE = "prices";
-
-    {
-        dataReceiver = new DataReceiver();
-    }
+    private final DataReceiver dataReceiver = new DataReceiver();
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {

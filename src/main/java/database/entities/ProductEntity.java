@@ -26,7 +26,7 @@ public class ProductEntity implements Serializable {
     private String synonym;
 
     @OneToMany(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = CascadeType.REMOVE)
     @JoinColumn(name = "product_id")
     private List<PriceEntity> prices;

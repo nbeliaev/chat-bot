@@ -15,8 +15,8 @@
             	},
 				{
                "type":"postback",
-               "title":"Активные ингредиенты",
-               "payload": "Ингредиенты"
+               "title":"Лекарства",
+               "payload": "Лекарства"
             	},
             	{
 				"type":"postback",

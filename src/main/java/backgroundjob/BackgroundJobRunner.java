@@ -12,7 +12,7 @@ public class BackgroundJobRunner {
         this.clazz = clazz;
     }
 
-    public void runJob() throws SchedulerException {
+    public void run() throws SchedulerException {
         final Scheduler scheduler = new StdSchedulerFactory().getScheduler();
         final JobDetail jobDetail = getJobDetail();
         final Trigger trigger = buildSimpleSchedulerTrigger();

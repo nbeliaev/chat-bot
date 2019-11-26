@@ -10,6 +10,8 @@ public class Config {
     public static final String CONNECTION_1C = "1C.connection-url";
     public static final String UPDATE_FREQUENCY = "1C.update-frequency";
     public static final String PORT = "jetty.port";
+    public static final String CURRENCY = "measure.currency";
+    public static final String PRICE_FORMAT = "measure.price-format";
     private static Properties properties;
 
     public static String getProperty(String propertyName) {
@@ -37,6 +39,6 @@ public class Config {
     }
 
     private Config() {
-
+        throw new UnsupportedOperationException();
     }
 }

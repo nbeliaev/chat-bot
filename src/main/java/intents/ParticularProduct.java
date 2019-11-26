@@ -1,10 +1,12 @@
 package intents;
 
 import com.google.actions.api.ActionRequest;
+import configs.Config;
 import database.dao.Dao;
 import database.dao.ProductDao;
 import database.entities.ProductEntity;
 import database.entities.StoreEntity;
+import utils.PriceFormatter;
 
 class ParticularProduct extends AbstractIntentResponse {
     private static final String PARAMETER_NAME = "name";
@@ -29,8 +31,10 @@ class ParticularProduct extends AbstractIntentResponse {
                 builder.append("-")
                         .append(store.getName())
                         .append(", ")
-                        .append("цена: ")
-                        .append(priceEntity.getPrice())
+                        .append("цена ")
+                        .append(PriceFormatter.format(priceEntity.getPrice()))
+                        .append(" ")
+                        .append(Config.getProperty(Config.CURRENCY))
                         .append("\n");
             });
         }

@@ -1,10 +1,12 @@
 package intents;
 
 import com.google.actions.api.ActionRequest;
+import configs.Config;
 import database.dao.Dao;
 import database.dao.ProductDao;
 import database.entities.PriceEntity;
 import database.entities.ProductEntity;
+import utils.PriceFormatter;
 
 import java.util.Comparator;
 import java.util.List;
@@ -38,7 +40,9 @@ class ProductList extends AbstractIntentResponse {
             if (minPrice.isPresent()) {
                 final PriceEntity priceEntity = minPrice.get();
                 builder.append(" цена от ")
-                        .append(priceEntity.getPrice())
+                        .append(PriceFormatter.format(priceEntity.getPrice()))
+                        .append(" ")
+                        .append(Config.getProperty(Config.CURRENCY))
                         .append("\n");
             }
         });

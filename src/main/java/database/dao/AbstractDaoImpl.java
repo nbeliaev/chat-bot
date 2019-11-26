@@ -108,8 +108,7 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
         final CriteriaQuery<T> criteria = builder.createQuery(clazz);
         final Root<T> root = criteria.from(clazz);
         final Predicate like = builder.like(root.get(name), "%" + pattern + "%");
-        criteria.select(root).where(like);
+        criteria.select(root).where(like).orderBy(builder.asc(root.get("name")));
         return criteria;
     }
-
 }

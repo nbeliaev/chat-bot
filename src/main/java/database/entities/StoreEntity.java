@@ -19,6 +19,9 @@ public class StoreEntity implements Serializable {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @OneToMany(
             fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)
@@ -28,13 +31,18 @@ public class StoreEntity implements Serializable {
     public StoreEntity() {
     }
 
-    public StoreEntity(String external_id, String name, String address) {
-        this(external_id, name);
+    private StoreEntity(String name) {
+        this.name = name;
+    }
+
+    public StoreEntity(String name, String address) {
+        this(name);
         this.address = address;
     }
 
-    private StoreEntity(String external_id, String name) {
-        this.name = name;
+    public StoreEntity(String name, String address, String phoneNumber) {
+        this(name, address);
+        this.phoneNumber = phoneNumber;
     }
 
     public String getUuid() {
@@ -61,6 +69,14 @@ public class StoreEntity implements Serializable {
         this.address = address;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public List<PriceEntity> getPrices() {
         return prices;
     }
@@ -84,14 +100,18 @@ public class StoreEntity implements Serializable {
 
         StoreEntity that = (StoreEntity) o;
 
+        if (!uuid.equals(that.uuid)) return false;
         if (!name.equals(that.name)) return false;
-        return address.equals(that.address);
+        if (address != null ? !address.equals(that.address) : that.address != null) return false;
+        return phoneNumber != null ? phoneNumber.equals(that.phoneNumber) : that.phoneNumber == null;
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + address.hashCode();
+        int result = uuid.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         return result;
     }
 
@@ -101,6 +121,7 @@ public class StoreEntity implements Serializable {
                 "uuid='" + uuid + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }

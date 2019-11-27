@@ -4,14 +4,17 @@ import com.google.actions.api.ActionRequest;
 import com.google.actions.api.ActionResponse;
 import com.google.actions.api.DialogflowApp;
 import com.google.actions.api.ForIntent;
+import intents.response.ParticularProduct;
+import intents.response.ProductList;
+import intents.response.ShopList;
 
 @SuppressWarnings("unused")
 public class IntentsHandler extends DialogflowApp {
 
-    @ForIntent("Shops")
+    @ForIntent("Shop List")
     public ActionResponse getAllShops(ActionRequest request) {
-        final ShopsSchedule shopsSchedule = new ShopsSchedule(request);
-        return shopsSchedule.getResponse();
+        final ShopList shopList = new ShopList(request);
+        return shopList.getResponse();
     }
 
     @ForIntent("Product List")

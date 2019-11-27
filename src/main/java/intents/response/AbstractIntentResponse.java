@@ -1,4 +1,4 @@
-package intents;
+package intents.response;
 
 import com.google.actions.api.ActionRequest;
 import com.google.actions.api.ActionResponse;
@@ -13,7 +13,7 @@ abstract class AbstractIntentResponse extends DialogflowApp {
         this.request = request;
     }
 
-    ActionResponse getResponse() {
+    public ActionResponse getResponse() {
         final ResponseBuilder responseBuilder = getResponseBuilder(request);
         final SimpleResponse simpleResponse = new SimpleResponse();
         simpleResponse.setDisplayText(prepareTextMessage());

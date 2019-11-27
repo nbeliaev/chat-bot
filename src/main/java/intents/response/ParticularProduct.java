@@ -1,4 +1,4 @@
-package intents;
+package intents.response;
 
 import com.google.actions.api.ActionRequest;
 import configs.Config;
@@ -8,10 +8,10 @@ import database.entities.ProductEntity;
 import database.entities.StoreEntity;
 import utils.PriceFormatter;
 
-class ParticularProduct extends AbstractIntentResponse {
+public class ParticularProduct extends AbstractIntentResponse {
     private static final String PARAMETER_NAME = "name";
 
-    ParticularProduct(ActionRequest request) {
+    public ParticularProduct(ActionRequest request) {
         super(request);
     }
 
@@ -29,7 +29,7 @@ class ParticularProduct extends AbstractIntentResponse {
             product.getPrices().forEach(priceEntity -> {
                 final StoreEntity store = priceEntity.getStore();
                 builder.append("-")
-                        .append(store.getName())
+                        .append(store.getAddress())
                         .append(", ")
                         .append("цена ")
                         .append(PriceFormatter.format(priceEntity.getPrice()))

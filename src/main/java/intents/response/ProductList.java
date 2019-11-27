@@ -1,4 +1,4 @@
-package intents;
+package intents.response;
 
 import com.google.actions.api.ActionRequest;
 import configs.Config;
@@ -11,25 +11,26 @@ import utils.PriceFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 
-class ProductList extends AbstractIntentResponse {
-    private static final String PARAMETER_NAME = "synonym";
+public class ProductList extends AbstractIntentResponse {
 
-    ProductList(ActionRequest request) {
+    public ProductList(ActionRequest request) {
         super(request);
     }
 
     @Override
     String prepareTextMessage() {
-        final String synonym = (String) request.getParameter(PARAMETER_NAME);
+        final String synonym = (String) request.getParameter("synonym");
         final Dao<ProductEntity> dao = new ProductDao();
-        final List<ProductEntity> productList = dao.findByPattern(ProductEntity.class, PARAMETER_NAME, synonym);
+        final List<ProductEntity> productList = new Stack<>();
+        productList.addAll(dao.findByPattern(ProductEntity.class, "synonym", synonym));
+        productList.addAll(dao.findByPattern(ProductEntity.class, "name", synonym));
         final StringBuilder builder = new StringBuilder();
         builder.append(String.format("Вы искали %s", synonym))
                 .append("\n");
         if (productList.size() == 0) {
-            builder.append("Извините, но сейчас ничего нет в наличии. ")
-                    .append("Попробуйте уточнить параметр поиска");
+            builder.append("Извините, но сейчас ничего нет в наличии. Попробуйте уточнить параметр поиска");
             return builder.toString();
         }
         builder.append("Сейчас есть в наличии:")

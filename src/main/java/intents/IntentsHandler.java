@@ -25,10 +25,4 @@ public class IntentsHandler extends DialogflowApp {
         final ParticularProduct product = new ParticularProduct(request);
         return product.getResponse();
     }
-
-    @ForIntent("Customer Order Confirm")
-    public ActionResponse createCustomerOrder(ActionRequest request) {
-        final CustomerOrderConfirmation confirmation = new CustomerOrderConfirmation(request);
-        return confirmation.getResponse();
-    }
 }

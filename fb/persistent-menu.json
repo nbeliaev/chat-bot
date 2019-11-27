@@ -17,11 +17,6 @@
                "type":"postback",
                "title":"Лекарства",
                "payload": "Лекарства"
-            	},
-            	{
-				"type":"postback",
-               "title":"Заказ",
-               "payload": "Заказ"
             	}
                ]
             },

@@ -7,7 +7,6 @@ import com.google.actions.api.ForIntent;
 import intents.response.ParticularProduct;
 import intents.response.ProductList;
 import intents.response.ShopList;
-import intents.response.ShopsMap;
 
 @SuppressWarnings("unused")
 public class IntentsHandler extends DialogflowApp {
@@ -28,11 +27,5 @@ public class IntentsHandler extends DialogflowApp {
     public ActionResponse getProduct(ActionRequest request) {
         final ParticularProduct product = new ParticularProduct(request);
         return product.getResponse();
-    }
-
-    @ForIntent("Show Shops Map")
-    public ActionResponse getShopsMap(ActionRequest request) {
-        final ShopsMap shopsMap = new ShopsMap(request);
-        return shopsMap.getResponse();
     }
 }

@@ -27,20 +27,18 @@ public class ProductList extends AbstractIntentResponse {
         productList.addAll(dao.findByPattern(ProductEntity.class, "synonym", synonym));
         productList.addAll(dao.findByPattern(ProductEntity.class, "name", synonym));
         final StringBuilder builder = new StringBuilder();
-        builder.append(String.format("Вы искали %s", synonym))
-                .append("\n");
-        if (productList.size() == 0) {
+        if (productList.isEmpty()) {
             builder.append("Извините, но сейчас ничего нет в наличии. Попробуйте уточнить параметр поиска");
             return builder.toString();
         }
-        builder.append("Сейчас есть в наличии:")
-                .append("\n");
         productList.forEach(product -> {
             builder.append(product.getName());
             final Optional<PriceEntity> minPrice = product.getPrices().stream().min(Comparator.comparingDouble(PriceEntity::getPrice));
-            if (minPrice.isPresent()) {
+            if (!minPrice.isPresent()) {
+                builder.append(", нет в наличии");
+            } else {
                 final PriceEntity priceEntity = minPrice.get();
-                builder.append(" цена от ")
+                builder.append(", цена от ")
                         .append(PriceFormatter.format(priceEntity.getPrice()))
                         .append(" ")
                         .append(Config.getProperty(Config.CURRENCY))

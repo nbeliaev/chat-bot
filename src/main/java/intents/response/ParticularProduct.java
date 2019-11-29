@@ -23,19 +23,20 @@ public class ParticularProduct extends AbstractIntentResponse {
         final StringBuilder builder = new StringBuilder();
         builder.append(product.getName())
                 .append("\n");
-        if (product.getPrices().size() != 0) {
+        if (!product.getPrices().isEmpty()) {
             builder.append("Есть в наличии в магазинах:")
                     .append("\n");
             product.getPrices().forEach(priceEntity -> {
                 final StoreEntity store = priceEntity.getStore();
-                builder.append("-")
-                        .append(store.getAddress())
-                        .append(", ")
-                        .append("цена ")
-                        .append(PriceFormatter.format(priceEntity.getPrice()))
-                        .append(" ")
-                        .append(Config.getProperty(Config.CURRENCY))
-                        .append("\n");
+                if (!store.getAddress().isEmpty()) {
+                    builder.append("- ")
+                            .append(store.getAddress())
+                            .append(", цена ")
+                            .append(PriceFormatter.format(priceEntity.getPrice()))
+                            .append(" ")
+                            .append(Config.getProperty(Config.CURRENCY))
+                            .append("\n");
+                }
             });
         }
         return builder.toString();

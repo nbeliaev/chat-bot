@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-    public static final String USER_1C = "1C.user";
-    public static final String PASSWORD_1C = "1C.password";
     public static final String CONNECTION_1C = "1C.connection-url";
     public static final String UPDATE_FREQUENCY = "1C.update-frequency";
     public static final String PORT = "jetty.port";

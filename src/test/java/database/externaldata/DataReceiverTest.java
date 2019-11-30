@@ -11,7 +11,6 @@ public class DataReceiverTest {
     private static final String PRODUCT_RESOURCE = "products";
     private static final String PRICES_RESOURCE = "prices";
 
-
     @Test
     public void getStores() throws ConnectionException {
         final String data = dataReceiver.getResourceData(STORES_RESOURCE);

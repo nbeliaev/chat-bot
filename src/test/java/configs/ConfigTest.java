@@ -7,7 +7,7 @@ public class ConfigTest {
 
     @Test
     public void getProperty() {
-        final String user = Config.getProperty(Config.USER_1C);
-        Assert.assertEquals("bot", user);
+        final String currency = Config.getProperty(Config.CURRENCY);
+        Assert.assertEquals("VND", currency);
     }
 }

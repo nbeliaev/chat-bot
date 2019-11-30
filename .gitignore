@@ -4,3 +4,4 @@ out
 target
 db
 *.jar
+.env

@@ -7,11 +7,9 @@ import database.dao.ProductDao;
 import database.entities.PriceEntity;
 import database.entities.ProductEntity;
 import utils.PriceFormatter;
+import utils.UTF8Control;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Stack;
+import java.util.*;
 
 public class ProductList extends AbstractIntentResponse {
 
@@ -27,18 +25,22 @@ public class ProductList extends AbstractIntentResponse {
         productList.addAll(dao.findByPattern(ProductEntity.class, "synonym", synonym));
         productList.addAll(dao.findByPattern(ProductEntity.class, "name", synonym));
         final StringBuilder builder = new StringBuilder();
+        final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", request.getLocale(), new UTF8Control());
         if (productList.isEmpty()) {
-            builder.append("Извините, но сейчас ничего нет в наличии. Попробуйте уточнить параметр поиска");
+            builder.append(bundle.getString("refineSearchParameter"));
             return builder.toString();
         }
         productList.forEach(product -> {
             builder.append(product.getName());
             final Optional<PriceEntity> minPrice = product.getPrices().stream().min(Comparator.comparingDouble(PriceEntity::getPrice));
             if (!minPrice.isPresent()) {
-                builder.append(", нет в наличии");
+                builder.append(", ")
+                        .append(bundle.getString("notAvailableProduct"));
             } else {
                 final PriceEntity priceEntity = minPrice.get();
-                builder.append(", цена от ")
+                builder.append(", ")
+                        .append(bundle.getString("startPrice"))
+                        .append(" ")
                         .append(PriceFormatter.format(priceEntity.getPrice()))
                         .append(" ")
                         .append(Config.getProperty(Config.CURRENCY))

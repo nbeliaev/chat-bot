@@ -4,8 +4,10 @@ import com.google.actions.api.ActionRequest;
 import database.dao.Dao;
 import database.dao.StoreDao;
 import database.entities.StoreEntity;
+import utils.UTF8Control;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class ShopList extends AbstractIntentResponse {
 
@@ -18,11 +20,12 @@ public class ShopList extends AbstractIntentResponse {
         Dao<StoreEntity> dao = new StoreDao();
         final List<StoreEntity> stores = dao.getAll(StoreEntity.class);
         final StringBuilder builder = new StringBuilder();
+        final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", request.getLocale(), new UTF8Control());
         if (stores.isEmpty()) {
-            builder.append("Извините, но я не нашел ни одного доступного адреса или телефона.");
+            builder.append(bundle.getString("notAvailableShop"));
             return builder.toString();
         } else {
-            builder.append("Адреса и контактные телефоны аптек нашей сети:")
+            builder.append(bundle.getString("shopContacts"))
                     .append("\n");
             stores.forEach(entity -> {
                 final String address = entity.getAddress();
@@ -31,7 +34,8 @@ public class ShopList extends AbstractIntentResponse {
                             .append("\n");
                     final String phoneNumber = entity.getPhoneNumber();
                     if (!phoneNumber.isEmpty()) {
-                        builder.append("тел. ")
+                        builder.append(bundle.getString("phoneNumber"))
+                                .append(" ")
                                 .append(phoneNumber)
                                 .append("\n");
                     }

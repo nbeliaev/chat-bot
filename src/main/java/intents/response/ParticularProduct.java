@@ -24,7 +24,7 @@ public class ParticularProduct extends AbstractIntentResponse {
         final Dao<ProductEntity> dao = new ProductDao();
         final ProductEntity product = dao.findByName(ProductEntity.class, name);
         final StringBuilder builder = new StringBuilder();
-        final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", request.getLocale(), new UTF8Control());
+        final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", getLocale(), new UTF8Control());
         builder.append(product.getName())
                 .append("\n");
         if (!product.getPrices().isEmpty()) {

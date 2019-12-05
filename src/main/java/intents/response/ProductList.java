@@ -25,7 +25,7 @@ public class ProductList extends AbstractIntentResponse {
         productList.addAll(dao.findByPattern(ProductEntity.class, "synonym", synonym));
         productList.addAll(dao.findByPattern(ProductEntity.class, "name", synonym));
         final StringBuilder builder = new StringBuilder();
-        final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", request.getLocale(), new UTF8Control());
+        final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", getLocale(), new UTF8Control());
         if (productList.isEmpty()) {
             builder.append(bundle.getString("refineSearchParameter"));
             return builder.toString();

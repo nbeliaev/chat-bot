@@ -9,7 +9,7 @@ public class Config {
     public static final String UPDATE_FREQUENCY = "1C.update-frequency";
     public static final String PORT = "jetty.port";
     public static final String CURRENCY = "measure.currency";
-    public static final String PRICE_FORMAT = "measure.price-format";
+    public static final String PRICE_FORMAT = "measure.fraction-digits-in-price";
     private static Properties properties;
 
     public static String getProperty(String propertyName) {

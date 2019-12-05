@@ -9,6 +9,8 @@ import database.entities.StoreEntity;
 import utils.PriceFormatter;
 import utils.UTF8Control;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ParticularProduct extends AbstractIntentResponse {
@@ -24,12 +26,14 @@ public class ParticularProduct extends AbstractIntentResponse {
         final Dao<ProductEntity> dao = new ProductDao();
         final ProductEntity product = dao.findByName(ProductEntity.class, name);
         final StringBuilder builder = new StringBuilder();
-        final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", getLocale(), new UTF8Control());
+        final Locale locale = getLocale();
+        final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", locale, new UTF8Control());
         builder.append(product.getName())
                 .append("\n");
         if (!product.getPrices().isEmpty()) {
             builder.append(bundle.getString("availableProduct"))
                     .append("\n");
+            final NumberFormat formatter = PriceFormatter.getInstance(locale, Integer.parseInt(Config.getProperty(Config.PRICE_FORMAT)));
             product.getPrices().forEach(priceEntity -> {
                 final StoreEntity store = priceEntity.getStore();
                 if (!store.getAddress().isEmpty()) {
@@ -38,7 +42,7 @@ public class ParticularProduct extends AbstractIntentResponse {
                             .append(", ")
                             .append(bundle.getString("price"))
                             .append(" ")
-                            .append(PriceFormatter.format(priceEntity.getPrice()))
+                            .append(formatter.format(priceEntity.getPrice()))
                             .append(" ")
                             .append(Config.getProperty(Config.CURRENCY))
                             .append("\n");

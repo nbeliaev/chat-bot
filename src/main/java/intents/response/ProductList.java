@@ -9,6 +9,7 @@ import database.entities.ProductEntity;
 import utils.PriceFormatter;
 import utils.UTF8Control;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 public class ProductList extends AbstractIntentResponse {
@@ -25,11 +26,13 @@ public class ProductList extends AbstractIntentResponse {
         productList.addAll(dao.findByPattern(ProductEntity.class, "synonym", synonym));
         productList.addAll(dao.findByPattern(ProductEntity.class, "name", synonym));
         final StringBuilder builder = new StringBuilder();
-        final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", getLocale(), new UTF8Control());
+        final Locale locale = getLocale();
+        final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", locale, new UTF8Control());
         if (productList.isEmpty()) {
             builder.append(bundle.getString("refineSearchParameter"));
             return builder.toString();
         }
+        final NumberFormat formatter = PriceFormatter.getInstance(locale, Integer.parseInt(Config.getProperty(Config.PRICE_FORMAT)));
         productList.forEach(product -> {
             builder.append(product.getName());
             final Optional<PriceEntity> minPrice = product.getPrices().stream().min(Comparator.comparingDouble(PriceEntity::getPrice));
@@ -41,7 +44,7 @@ public class ProductList extends AbstractIntentResponse {
                 builder.append(", ")
                         .append(bundle.getString("startPrice"))
                         .append(" ")
-                        .append(PriceFormatter.format(priceEntity.getPrice()))
+                        .append(formatter.format(priceEntity.getPrice()))
                         .append(" ")
                         .append(Config.getProperty(Config.CURRENCY))
                         .append("\n");

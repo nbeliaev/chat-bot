@@ -1,15 +1,19 @@
 package utils;
 
-import configs.Config;
-
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 public class PriceFormatter {
 
-    public static String format(double price) {
-        NumberFormat formatter = new DecimalFormat(Config.getProperty(Config.PRICE_FORMAT));
-        return formatter.format(price);
+    public static NumberFormat getInstance(Locale locale) {
+        return getInstance(locale, 0);
+    }
+
+    public static NumberFormat getInstance(Locale locale, int fractionDigits) {
+        final NumberFormat format = NumberFormat.getInstance(locale);
+        format.setMinimumFractionDigits(fractionDigits);
+        format.setMaximumFractionDigits(fractionDigits);
+        return format;
     }
 
     private PriceFormatter() {

@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ParticularProduct extends AbstractIntentResponse {
+    private final static String NEW_ROW = "\n";
     private static final String PARAMETER_NAME = "name";
 
     public ParticularProduct(ActionRequest request) {
@@ -36,12 +37,12 @@ public class ParticularProduct extends AbstractIntentResponse {
             return builder.toString();
         }
         builder.append(product.getName())
-                .append("\n")
-                .append("\n");
+                .append(NEW_ROW)
+                .append(NEW_ROW);
         if (!product.getPrices().isEmpty()) {
             builder.append(bundle.getString("availableProduct"))
-                    .append("\n")
-                    .append("\n");
+                    .append(NEW_ROW)
+                    .append(NEW_ROW);
             final NumberFormat formatter = PriceFormatter.getInstance(locale, Integer.parseInt(Config.getProperty(Config.PRICE_FORMAT)));
             product.getPrices().forEach(priceEntity -> {
                 final StoreEntity store = priceEntity.getStore();
@@ -54,8 +55,8 @@ public class ParticularProduct extends AbstractIntentResponse {
                             .append(formatter.format(priceEntity.getPrice()))
                             .append(" ")
                             .append(Config.getProperty(Config.CURRENCY))
-                            .append("\n")
-                            .append("\n");
+                            .append(NEW_ROW)
+                            .append(NEW_ROW);
                 }
             });
             builder.append(bundle.getString("furtherSearch"));

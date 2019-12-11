@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ShopList extends AbstractIntentResponse {
+    private final static String NEW_ROW = "\n";
 
     public ShopList(ActionRequest request) {
         super(request);
@@ -26,18 +27,18 @@ public class ShopList extends AbstractIntentResponse {
             return builder.toString();
         } else {
             builder.append(bundle.getString("shopContacts"))
-                    .append("\n");
+                    .append(NEW_ROW);
             stores.forEach(entity -> {
                 final String address = entity.getAddress();
                 if (!address.isEmpty()) {
                     builder.append(address)
-                            .append("\n");
+                            .append(NEW_ROW);
                     final String phoneNumber = entity.getPhoneNumber();
                     if (!phoneNumber.isEmpty()) {
                         builder.append(bundle.getString("phoneNumber"))
                                 .append(" ")
                                 .append(phoneNumber)
-                                .append("\n");
+                                .append(NEW_ROW);
                     }
                 }
             });

@@ -13,6 +13,7 @@ import java.text.NumberFormat;
 import java.util.*;
 
 public class ProductList extends AbstractIntentResponse {
+    private final static String NEW_ROW = "\n";
 
     public ProductList(ActionRequest request) {
         super(request);
@@ -35,15 +36,15 @@ public class ProductList extends AbstractIntentResponse {
         }
         final NumberFormat formatter = PriceFormatter.getInstance(locale, Integer.parseInt(Config.getProperty(Config.PRICE_FORMAT)));
         builder.append("По вашему запросу найдено:")
-                .append("\n")
-                .append("\n");
+                .append(NEW_ROW)
+                .append(NEW_ROW);
         productList.forEach(product -> {
             builder.append(product.getName());
             final Optional<PriceEntity> minPrice = product.getPrices().stream().min(Comparator.comparingDouble(PriceEntity::getPrice));
             if (!minPrice.isPresent()) {
                 builder.append(", ")
                         .append(bundle.getString("notAvailableProduct"))
-                        .append("\n");
+                        .append(NEW_ROW);
             } else {
                 final PriceEntity priceEntity = minPrice.get();
                 builder.append(", ")
@@ -52,11 +53,11 @@ public class ProductList extends AbstractIntentResponse {
                         .append(formatter.format(priceEntity.getPrice()))
                         .append(" ")
                         .append(Config.getProperty(Config.CURRENCY))
-                        .append("\n")
-                        .append("\n");
+                        .append(NEW_ROW)
+                        .append(NEW_ROW);
             }
         });
-        builder.append("\n")
+        builder.append(NEW_ROW)
                 .append(bundle.getString("checkProductInStores"));
         return builder.toString();
     }

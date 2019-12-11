@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class DataReceiver {
-    private int timeOut = 15_000;
+    private int timeOut = 20_000;
     private boolean ignoreContentType = true;
     private Connection.Method method = Connection.Method.GET;
 
+    @SuppressWarnings("unused")
     public DataReceiver(int timeOut,
                         Connection.Method method,
                         boolean ignoreContentType) {

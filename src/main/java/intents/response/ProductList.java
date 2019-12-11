@@ -20,8 +20,9 @@ public class ProductList extends AbstractIntentResponse {
 
     @Override
     String prepareTextMessage() {
-        final String synonym = (String) request.getParameter("synonym");
+        final String synonym = ((String) Objects.requireNonNull(request.getParameter("synonym"))).toLowerCase();
         final Dao<ProductEntity> dao = new ProductDao();
+        // TODO: use Set instead of Stack
         final List<ProductEntity> productList = new Stack<>();
         productList.addAll(dao.findByPattern(ProductEntity.class, "synonym", synonym));
         productList.addAll(dao.findByPattern(ProductEntity.class, "name", synonym));
@@ -33,12 +34,16 @@ public class ProductList extends AbstractIntentResponse {
             return builder.toString();
         }
         final NumberFormat formatter = PriceFormatter.getInstance(locale, Integer.parseInt(Config.getProperty(Config.PRICE_FORMAT)));
+        builder.append("По вашему запросу найдено:")
+                .append("\n")
+                .append("\n");
         productList.forEach(product -> {
             builder.append(product.getName());
             final Optional<PriceEntity> minPrice = product.getPrices().stream().min(Comparator.comparingDouble(PriceEntity::getPrice));
             if (!minPrice.isPresent()) {
                 builder.append(", ")
-                        .append(bundle.getString("notAvailableProduct"));
+                        .append(bundle.getString("notAvailableProduct"))
+                        .append("\n");
             } else {
                 final PriceEntity priceEntity = minPrice.get();
                 builder.append(", ")
@@ -47,9 +52,12 @@ public class ProductList extends AbstractIntentResponse {
                         .append(formatter.format(priceEntity.getPrice()))
                         .append(" ")
                         .append(Config.getProperty(Config.CURRENCY))
+                        .append("\n")
                         .append("\n");
             }
         });
+        builder.append("\n")
+                .append(bundle.getString("checkProductInStores"));
         return builder.toString();
     }
 }

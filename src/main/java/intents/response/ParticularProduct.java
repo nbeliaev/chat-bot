@@ -7,6 +7,8 @@ import database.dao.ProductDao;
 import database.entities.ProductEntity;
 import database.entities.StoreEntity;
 import exceptions.NotExistDataBaseException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import utils.PriceFormatter;
 import utils.UTF8Control;
 
@@ -17,6 +19,7 @@ import java.util.ResourceBundle;
 public class ParticularProduct extends AbstractIntentResponse {
     private final static String NEW_ROW = "\n";
     private static final String PARAMETER_NAME = "name";
+    private final static Logger log = LogManager.getLogger(ParticularProduct.class);
 
     public ParticularProduct(ActionRequest request) {
         super(request);
@@ -33,6 +36,7 @@ public class ParticularProduct extends AbstractIntentResponse {
         try {
             product = dao.findByName(ProductEntity.class, name);
         } catch (NotExistDataBaseException e) {
+            log.info(String.format("No results were founded for %s", name));
             builder.append(bundle.getString("refineSearchParameter"));
             return builder.toString();
         }

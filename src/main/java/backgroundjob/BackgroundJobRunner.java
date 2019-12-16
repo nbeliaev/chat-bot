@@ -1,12 +1,15 @@
 package backgroundjob;
 
 import configs.Config;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 @SuppressWarnings("unused")
 public class BackgroundJobRunner {
     private final Class<? extends Job> clazz;
+    private final static Logger log = LogManager.getLogger(BackgroundJob.class);
 
     public BackgroundJobRunner(Class<? extends Job> clazz) {
         this.clazz = clazz;
@@ -20,8 +23,7 @@ public class BackgroundJobRunner {
             scheduler.scheduleJob(jobDetail, trigger);
             scheduler.start();
         } catch (SchedulerException e) {
-            // TODO: add log
-            e.printStackTrace();
+            log.error(e);
         }
     }
 

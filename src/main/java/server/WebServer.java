@@ -1,6 +1,8 @@
 package server;
 
 import configs.Config;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -8,6 +10,7 @@ import servlets.DialogflowServlet;
 
 public class WebServer {
     private final Server server;
+    private final static Logger log = LogManager.getLogger(WebServer.class);
 
     public WebServer() {
         server = new Server(Integer.parseInt(Config.getProperty(Config.PORT)));
@@ -16,6 +19,7 @@ public class WebServer {
 
     public void run() throws Exception {
         server.start();
+        log.info(String.format("Server has been started, port %s.", Integer.parseInt(Config.getProperty(Config.PORT))));
         server.join();
     }
 

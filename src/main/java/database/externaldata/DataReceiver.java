@@ -2,17 +2,20 @@ package database.externaldata;
 
 import configs.Config;
 import exceptions.ConnectionException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import utils.AuthUtil;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class DataReceiver {
     private int timeOut = 20_000;
     private boolean ignoreContentType = true;
     private Connection.Method method = Connection.Method.GET;
+    private final static Logger log = LogManager.getLogger(DataReceiver.class);
 
     @SuppressWarnings("unused")
     public DataReceiver(int timeOut,
@@ -30,17 +33,19 @@ public class DataReceiver {
         final Connection.Response response;
         try {
             final String resourcePrefix = "/hs/bot/";
-            response = Jsoup.connect(Config.getProperty(Config.CONNECTION_1C) + resourcePrefix + resource)
+            final String url = Config.getProperty(Config.CONNECTION_1C) + resourcePrefix + resource;
+            log.info("Receiving data from " + url);
+            response = Jsoup.connect(url)
                     .header("Authorization", AuthUtil.getBasicAuthorization())
                     .timeout(timeOut)
                     .ignoreContentType(ignoreContentType)
                     .method(method)
                     .execute();
         } catch (IOException e) {
-            throw new ConnectionException(String.format("Couldn't connect to 1C:Enterprise: the reason is %s", e.getMessage()));
-        }
-        if (response.statusCode() != HttpServletResponse.SC_OK) {
-            throw new ConnectionException(String.format("Something was wrong. The response status is %s", response.statusCode()));
+            String msg = String.format("Couldn't connect to 1C:Enterprise: the reason was %s. ", e.getMessage()) +
+                    String.format("The url was %s. ", ((HttpStatusException) e).getUrl()) +
+                    String.format("The status code was %s.", ((HttpStatusException) e).getStatusCode());
+            throw new ConnectionException(msg);
         }
         return response.body();
     }

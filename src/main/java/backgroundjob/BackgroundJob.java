@@ -1,15 +1,12 @@
 package backgroundjob;
 
 import database.dao.Dao;
-import database.dao.PriceDao;
 import database.dao.ProductDao;
 import database.dao.StoreDao;
-import database.entities.PriceEntity;
 import database.entities.ProductEntity;
 import database.entities.StoreEntity;
 import database.externaldata.DataReceiver;
 import exceptions.ConnectionException;
-import exceptions.ExistDataBaseException;
 import exceptions.NotExistDataBaseException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -33,7 +30,6 @@ public class BackgroundJob implements Job {
         log.info("Receive data from an external source.");
         processStores();
         processProducts();
-        processPrices();
         log.info("Receiving data from an external source is ended.");
     }
 
@@ -44,7 +40,6 @@ public class BackgroundJob implements Job {
         log.info(String.format("%s new store objects were received.", stores.length));
         final Dao<StoreEntity> dao = new StoreDao();
         Arrays.stream(stores).forEach(
-                // TODO: need to optimise
                 entity -> {
                     try {
                         dao.findByUuid(StoreEntity.class, entity.getUuid());
@@ -63,7 +58,6 @@ public class BackgroundJob implements Job {
         final ProductEntity[] products = JsonParser.read(json, ProductEntity[].class);
         final Dao<ProductEntity> dao = new ProductDao();
         Arrays.stream(products).forEach(
-                // TODO: need to optimise
                 entity -> {
                     try {
                         dao.findByUuid(ProductEntity.class, entity.getUuid());
@@ -72,26 +66,6 @@ public class BackgroundJob implements Job {
                     } catch (NotExistDataBaseException e) {
                         dao.save(entity);
                         log.debug(String.format("The product object %s was saved", entity.getUuid()));
-                    }
-                });
-    }
-
-    // TODO: rework this method
-    private void processPrices() throws JobExecutionException {
-        log.info("Receive product prices from an external source.");
-        final String json = getJson(PRICES_RESOURCE);
-        final PriceEntity[] products = JsonParser.read(json, PriceEntity[].class);
-        final Dao<PriceEntity> dao = new PriceDao();
-        dao.deleteAll();
-        Arrays.stream(products).forEach(
-                // TODO: need to optimise
-                entity -> {
-                    try {
-                        dao.save(entity);
-                        log.debug(String.format("The price product object %s was saved", entity.getUuid()));
-                    } catch (ExistDataBaseException e) {
-                        throw new ExistDataBaseException(
-                                String.format("Couldn't save price with uuid %s. Because it already exists.", entity.getUuid()));
                     }
                 });
     }

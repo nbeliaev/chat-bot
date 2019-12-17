@@ -4,7 +4,7 @@ import com.google.actions.api.ActionRequest;
 import configs.Config;
 import database.dao.Dao;
 import database.dao.ProductDao;
-import database.entities.PriceEntity;
+import database.entities.ProductsInStoresEntity;
 import database.entities.ProductEntity;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -45,17 +45,17 @@ public class ProductList extends AbstractIntentResponse {
                 .append(NEW_ROW);
         productList.forEach(product -> {
             builder.append(product.getName());
-            final Optional<PriceEntity> minPrice = product.getPrices().stream().min(Comparator.comparingDouble(PriceEntity::getPrice));
+            final Optional<ProductsInStoresEntity> minPrice = product.getPrices().stream().min(Comparator.comparingDouble(ProductsInStoresEntity::getPrice));
             if (!minPrice.isPresent()) {
                 builder.append(", ")
                         .append(bundle.getString("notAvailableProduct"))
                         .append(NEW_ROW);
             } else {
-                final PriceEntity priceEntity = minPrice.get();
+                final ProductsInStoresEntity productsInStoresEntity = minPrice.get();
                 builder.append(", ")
                         .append(bundle.getString("startPrice"))
                         .append(" ")
-                        .append(formatter.format(priceEntity.getPrice()))
+                        .append(formatter.format(productsInStoresEntity.getPrice()))
                         .append(" ")
                         .append(Config.getProperty(Config.CURRENCY))
                         .append(NEW_ROW)

@@ -23,7 +23,7 @@
 
         <mapping class="database.entities.StoreEntity"/>
         <mapping class="database.entities.ProductEntity"/>
-        <mapping class="database.entities.PriceEntity"/>
+        <mapping class="database.entities.ProductsInStoresEntity"/>
 
     </session-factory>
 

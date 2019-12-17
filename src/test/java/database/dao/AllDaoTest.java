@@ -7,7 +7,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         ProductDaoTest.class,
         StoreDaoTest.class,
-        PriceDaoTest.class
+        ProductsInStoresDaoTest.class
 })
 public class AllDaoTest {
 }

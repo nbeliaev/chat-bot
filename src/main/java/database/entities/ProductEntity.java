@@ -27,9 +27,9 @@ public class ProductEntity implements Serializable {
 
     @OneToMany(
             fetch = FetchType.EAGER,
-            cascade = CascadeType.REMOVE)
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
-    private List<PriceEntity> prices;
+    private List<ProductsInStoresEntity> prices;
 
     public ProductEntity() {
     }
@@ -67,15 +67,15 @@ public class ProductEntity implements Serializable {
         this.synonym = activeIngredient;
     }
 
-    public List<PriceEntity> getPrices() {
+    public List<ProductsInStoresEntity> getPrices() {
         return prices;
     }
 
-    public void setPrices(List<PriceEntity> prices) {
+    public void setPrices(List<ProductsInStoresEntity> prices) {
         this.prices = prices;
     }
 
-    public void addPrice(PriceEntity price) {
+    public void addPrice(ProductsInStoresEntity price) {
         if (prices == null) {
             prices = new ArrayList<>();
         }

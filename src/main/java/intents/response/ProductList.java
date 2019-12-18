@@ -13,6 +13,8 @@ import utils.UTF8Control;
 
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ProductList extends AbstractIntentResponse {
     private final static String NEW_ROW = "\n";
@@ -26,10 +28,10 @@ public class ProductList extends AbstractIntentResponse {
     String prepareTextMessage() {
         final String synonym = ((String) Objects.requireNonNull(request.getParameter("synonym"))).toLowerCase();
         final Dao<ProductEntity> dao = new ProductDao();
-        // TODO: use Set instead of Stack
-        final List<ProductEntity> productList = new Stack<>();
-        productList.addAll(dao.findByPattern(ProductEntity.class, "synonym", synonym));
-        productList.addAll(dao.findByPattern(ProductEntity.class, "name", synonym));
+        final Set<ProductEntity> productList = Stream.concat(
+                dao.findByPattern(ProductEntity.class, "synonym", synonym).stream(),
+                dao.findByPattern(ProductEntity.class, "name", synonym).stream()
+        ).collect(Collectors.toSet());
         final StringBuilder builder = new StringBuilder();
         final Locale locale = getLocale();
         final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", locale, new UTF8Control());

@@ -21,7 +21,6 @@ import java.util.Arrays;
 public class BackgroundJob implements Job {
     private static final String STORES_RESOURCE = "stores";
     private static final String PRODUCT_RESOURCE = "products";
-    private static final String PRICES_RESOURCE = "prices";
     private final DataReceiver dataReceiver = new DataReceiver();
     private final static Logger log = LogManager.getLogger(BackgroundJob.class);
 

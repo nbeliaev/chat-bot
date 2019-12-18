@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ShopList extends AbstractIntentResponse {
-    private final static String NEW_ROW = "\n";
     private final static Logger log = LogManager.getLogger(ShopList.class);
 
     public ShopList(ActionRequest request) {
@@ -23,7 +22,6 @@ public class ShopList extends AbstractIntentResponse {
     String prepareTextMessage() {
         Dao<StoreEntity> dao = new StoreDao();
         final List<StoreEntity> stores = dao.getAll(StoreEntity.class);
-        final StringBuilder builder = new StringBuilder();
         final ResourceBundle bundle = ResourceBundle.getBundle("lang/i18n", getLocale(), new UTF8Control());
         if (stores.isEmpty()) {
             log.warn("No available shops.");

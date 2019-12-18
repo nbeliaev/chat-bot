@@ -10,7 +10,9 @@ import java.util.Locale;
 import java.util.Objects;
 
 abstract class AbstractIntentResponse extends DialogflowApp {
-    ActionRequest request;
+    protected final ActionRequest request;
+    protected final StringBuilder builder = new StringBuilder();
+    protected final static String NEW_ROW = "\n";
 
     AbstractIntentResponse(ActionRequest request) {
         this.request = request;

@@ -42,7 +42,7 @@ public class ProductList extends AbstractIntentResponse {
         }
         final NumberFormat formatter = PriceFormatter.getInstance(locale, Integer.parseInt(Config.getProperty(Config.PRICE_FORMAT)));
         // TODO: use bundle
-        builder.append("По вашему запросу найдено:")
+        builder.append(bundle.getString("requestFound"))
                 .append(NEW_ROW)
                 .append(NEW_ROW);
         productList.forEach(product -> {

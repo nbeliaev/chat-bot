@@ -29,7 +29,7 @@ public class ProductEntity implements Serializable {
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
-    private List<ProductsInStoresEntity> prices;
+    private List<ProductsInStoresEntity> productsInStores;
 
     public ProductEntity() {
     }
@@ -67,19 +67,19 @@ public class ProductEntity implements Serializable {
         this.synonym = activeIngredient;
     }
 
-    public List<ProductsInStoresEntity> getPrices() {
-        return prices;
+    public List<ProductsInStoresEntity> getProductsInStores() {
+        return productsInStores;
     }
 
-    public void setPrices(List<ProductsInStoresEntity> prices) {
-        this.prices = prices;
+    public void setProductsInStores(List<ProductsInStoresEntity> prices) {
+        this.productsInStores = prices;
     }
 
-    public void addPrice(ProductsInStoresEntity price) {
-        if (prices == null) {
-            prices = new ArrayList<>();
+    public void addProductsInStores(ProductsInStoresEntity price) {
+        if (productsInStores == null) {
+            productsInStores = new ArrayList<>();
         }
-        prices.add(price);
+        productsInStores.add(price);
         price.setProduct(this);
     }
 

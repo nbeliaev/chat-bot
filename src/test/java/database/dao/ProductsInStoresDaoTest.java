@@ -22,7 +22,7 @@ public class ProductsInStoresDaoTest extends AbstractDaoImplTest<ProductsInStore
 
         storeDao.save(STORE_1);
         STORE_1.addPrice(PRODUCT_IN_STORE_1);
-        PRODUCT_1.addPrice(PRODUCT_IN_STORE_1);
+        PRODUCT_1.addProductsInStores(PRODUCT_IN_STORE_1);
         productDao.save(PRODUCT_1);
     }
 
@@ -55,7 +55,7 @@ public class ProductsInStoresDaoTest extends AbstractDaoImplTest<ProductsInStore
 
     @Override
     public void save() {
-        PRODUCT_1.addPrice(PRODUCT_IN_STORE_2);
+        PRODUCT_1.addProductsInStores(PRODUCT_IN_STORE_2);
         STORE_1.addPrice(PRODUCT_IN_STORE_2);
         dao.save(PRODUCT_IN_STORE_2);
         Assert.assertEquals(PRODUCT_IN_STORE_2, dao.findByUuid(ProductsInStoresEntity.class, PRODUCT_IN_STORE_2.getUuid()));

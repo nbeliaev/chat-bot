@@ -13,19 +13,19 @@ public class DataReceiverTest {
 
     @Test
     public void getStores() throws ConnectionException {
-        final String data = dataReceiver.getResourceData(STORES_RESOURCE);
+        final String data = dataReceiver.getExchangeMessage(STORES_RESOURCE).getData();
         assertFalse(data.isEmpty());
     }
 
     @Test
     public void getProducts() throws ConnectionException {
-        final String data = dataReceiver.getResourceData(PRODUCT_RESOURCE);
+        final String data = dataReceiver.getExchangeMessage(PRODUCT_RESOURCE).getData();
         assertFalse(data.isEmpty());
     }
 
     @Test
     public void getPrices() throws ConnectionException {
-        final String data = dataReceiver.getResourceData(PRICES_RESOURCE);
+        final String data = dataReceiver.getExchangeMessage(PRICES_RESOURCE).getData();
         assertFalse(data.isEmpty());
     }
 

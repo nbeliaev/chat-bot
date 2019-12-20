@@ -29,7 +29,11 @@ public class DataReceiver {
     public DataReceiver() {
     }
 
-    public String getResourceData(String resource) throws ConnectionException {
+    public ExchangeMessage getExchangeMessage(String resource) throws ConnectionException {
+        return getExchangeMessage(resource, "");
+    }
+
+    public ExchangeMessage getExchangeMessage(String resource, String messageId) throws ConnectionException {
         final Connection.Response response;
         try {
             final String resourcePrefix = "/hs/bot/";
@@ -37,6 +41,7 @@ public class DataReceiver {
             log.info("Receiving data from " + url);
             response = Jsoup.connect(url)
                     .header("Authorization", AuthUtil.getBasicAuthorization())
+                    .header("MessageId", messageId)
                     .timeout(timeOut)
                     .ignoreContentType(ignoreContentType)
                     .method(method)
@@ -47,6 +52,6 @@ public class DataReceiver {
                     String.format("The status code was %s.", ((HttpStatusException) e).getStatusCode());
             throw new ConnectionException(msg);
         }
-        return response.body();
+        return new ExchangeMessage(response.header("MessageId"), response.body());
     }
 }

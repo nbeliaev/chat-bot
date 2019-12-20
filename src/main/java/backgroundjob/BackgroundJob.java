@@ -6,6 +6,7 @@ import database.dao.StoreDao;
 import database.entities.ProductEntity;
 import database.entities.StoreEntity;
 import database.externaldata.DataReceiver;
+import database.externaldata.ExchangeMessage;
 import exceptions.ConnectionException;
 import exceptions.NotExistDataBaseException;
 import org.apache.log4j.LogManager;
@@ -20,23 +21,25 @@ import java.util.Arrays;
 @SuppressWarnings("unused")
 public class BackgroundJob implements Job {
     private static final String STORES_RESOURCE = "stores";
-    private static final String PRODUCT_RESOURCE = "products";
+    private static final String PRODUCTS_RESOURCE = "products";
     private final DataReceiver dataReceiver = new DataReceiver();
     private final static Logger log = LogManager.getLogger(BackgroundJob.class);
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        log.info("Receive data from an external source.");
-        processStores();
-        processProducts();
-        log.info("Receiving data from an external source is ended.");
+        log.info("Begin of receiving data from 1C:Enterprise.");
+        receiveStores();
+        String messageId = "";
+        do {
+            messageId = receiveProducts(messageId);
+        } while (!messageId.isEmpty());
+        log.info("End of receiving data from 1C:Enterprise.");
     }
 
-    private void processStores() throws JobExecutionException {
-        log.info("Receive stores from an external source.");
-        final String json = getJson(STORES_RESOURCE);
-        final StoreEntity[] stores = JsonParser.read(json, StoreEntity[].class);
-        log.info(String.format("%s new store objects were received.", stores.length));
+    private void receiveStores() throws JobExecutionException {
+        log.info("Begin of receiving stores.");
+        final ExchangeMessage message = getExchangeMessage(STORES_RESOURCE);
+        final StoreEntity[] stores = JsonParser.read(message.getData(), StoreEntity[].class);
         final Dao<StoreEntity> dao = new StoreDao();
         Arrays.stream(stores).forEach(
                 entity -> {
@@ -49,12 +52,17 @@ public class BackgroundJob implements Job {
                         log.debug(String.format("The store object %s was saved", entity.getUuid()));
                     }
                 });
+        log.info("End of receiving stores.");
     }
 
-    private void processProducts() throws JobExecutionException {
-        log.info("Receive products from an external source.");
-        final String json = getJson(PRODUCT_RESOURCE);
-        final ProductEntity[] products = JsonParser.read(json, ProductEntity[].class);
+    private String receiveProducts(String messageId) throws JobExecutionException {
+        log.info("Begin of receiving products." + (messageId.isEmpty() ? "" : " Message id: " + messageId));
+        final ExchangeMessage message = getExchangeMessage(PRODUCTS_RESOURCE, messageId);
+        if (message.getData().isEmpty()) {
+            log.info("End of receiving products.");
+            return message.getId();
+        }
+        final ProductEntity[] products = JsonParser.read(message.getData(), ProductEntity[].class);
         final Dao<ProductEntity> dao = new ProductDao();
         Arrays.stream(products).forEach(
                 entity -> {
@@ -67,11 +75,17 @@ public class BackgroundJob implements Job {
                         log.debug(String.format("The product object %s was saved", entity.getUuid()));
                     }
                 });
+        log.info("End of receiving products.");
+        return message.getId();
     }
 
-    private String getJson(String resource) throws JobExecutionException {
+    private ExchangeMessage getExchangeMessage(String resource) throws JobExecutionException {
+        return getExchangeMessage(resource, "");
+    }
+
+    private ExchangeMessage getExchangeMessage(String resource, String messageId) throws JobExecutionException {
         try {
-            return dataReceiver.getResourceData(resource);
+            return dataReceiver.getExchangeMessage(resource, messageId);
         } catch (ConnectionException e) {
             log.error(e);
             throw new JobExecutionException(e);

@@ -1,4 +1,4 @@
-package database.externaldata;
+package exchange;
 
 public class ExchangeMessage {
     private final String id;

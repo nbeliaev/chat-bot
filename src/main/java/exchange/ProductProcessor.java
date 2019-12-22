@@ -4,6 +4,7 @@ import database.dao.Dao;
 import database.dao.ProductDao;
 import database.entities.ProductEntity;
 import exceptions.ConnectionException;
+import exceptions.ExistDataBaseException;
 import exceptions.NotExistDataBaseException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -40,10 +41,14 @@ public class ProductProcessor extends AbstractExternalDataProcessor {
                     try {
                         dao.findByUuid(ProductEntity.class, entity.getUuid());
                         dao.update(entity);
-                        log.debug(String.format("The product object %s was updated", entity.getUuid()));
+                        log.debug(String.format("The product %s was updated", entity.getUuid()));
                     } catch (NotExistDataBaseException e) {
-                        dao.save(entity);
-                        log.debug(String.format("The product object %s was saved", entity.getUuid()));
+                        try {
+                            dao.save(entity);
+                            log.debug(String.format("The product %s was saved", entity.getUuid()));
+                        } catch (ExistDataBaseException exist) {
+                            log.warn(String.format("The product %s with name %s already exists", entity.getUuid(), entity.getName()));
+                        }
                     }
                 });
         log.info("End of receiving products.");

@@ -24,9 +24,9 @@ public class StoreEntity implements Serializable {
 
     @OneToMany(
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.REMOVE)
     @JoinColumn(name = "store_id")
-    private List<ProductsInStoresEntity> prices;
+    private List<ProductsInStoresEntity> productsInStores;
 
     public StoreEntity() {
     }
@@ -77,19 +77,19 @@ public class StoreEntity implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<ProductsInStoresEntity> getPrices() {
-        return prices;
+    public List<ProductsInStoresEntity> getProductsInStores() {
+        return productsInStores;
     }
 
-    public void setPrices(List<ProductsInStoresEntity> prices) {
-        this.prices = prices;
+    public void setProductsInStores(List<ProductsInStoresEntity> prices) {
+        this.productsInStores = prices;
     }
 
     public void addPrice(ProductsInStoresEntity price) {
-        if (prices == null) {
-            prices = new ArrayList<>();
+        if (productsInStores == null) {
+            productsInStores = new ArrayList<>();
         }
-        prices.add(price);
+        productsInStores.add(price);
         price.setStore(this);
     }
 

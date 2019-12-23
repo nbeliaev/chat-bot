@@ -30,12 +30,15 @@ public class StoreProcessor extends AbstractExternalDataProcessor {
         Arrays.stream(stores).forEach(
                 entity -> {
                     try {
-                        dao.findByUuid(StoreEntity.class, entity.getUuid());
-                        dao.update(entity);
-                        log.debug(String.format("The store object %s was updated", entity.getUuid()));
+                        final StoreEntity foundedEntity = dao.findByUuid(StoreEntity.class, entity.getUuid());
+                        foundedEntity.setName(entity.getName());
+                        foundedEntity.setAddress(entity.getAddress());
+                        foundedEntity.setPhoneNumber(entity.getPhoneNumber());
+                        dao.update(foundedEntity);
+                        log.debug(String.format("The store %s was updated", entity.getUuid()));
                     } catch (NotExistDataBaseException e) {
                         dao.save(entity);
-                        log.debug(String.format("The store object %s was saved", entity.getUuid()));
+                        log.debug(String.format("The store %s was saved", entity.getUuid()));
                     }
                 });
         log.info("End of receiving stores.");

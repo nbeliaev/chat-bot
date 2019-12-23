@@ -14,7 +14,9 @@ import utils.PriceFormatter;
 import utils.UTF8Control;
 
 import java.text.NumberFormat;
+import java.util.Comparator;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ParticularProduct extends AbstractIntentResponse {
@@ -44,6 +46,11 @@ public class ParticularProduct extends AbstractIntentResponse {
         builder.append(product.getName())
                 .append(NEW_ROW)
                 .append(NEW_ROW);
+        final Optional<ProductsInStoresEntity> productsInStoresMaxQty = product.getProductsInStores().stream().max(Comparator.comparingDouble(ProductsInStoresEntity::getQuantity));
+        if (!productsInStoresMaxQty.isPresent() || productsInStoresMaxQty.get().getQuantity() == 0) {
+            builder.append(bundle.getString("notAvailableProduct"));
+            return builder.toString();
+        }
         if (!product.getProductsInStores().isEmpty()) {
             builder.append(bundle.getString("availableProduct"))
                     .append(NEW_ROW)

@@ -21,9 +21,9 @@
         <property name="hbm2ddl.auto">validate</property>
         <property name="current_session_context_class">thread</property>
 
-        <mapping class="database.entities.StoreEntity"/>
-        <mapping class="database.entities.ProductEntity"/>
-        <mapping class="database.entities.ProductsInStoresEntity"/>
+        <mapping class="dev.fr13.database.entities.StoreEntity"/>
+        <mapping class="dev.fr13.database.entities.ProductEntity"/>
+        <mapping class="dev.fr13.database.entities.ProductsInStoresEntity"/>
 
     </session-factory>
 

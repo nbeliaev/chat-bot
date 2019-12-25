@@ -1,8 +1,8 @@
-import configs.ConfigTest;
-import database.dao.AllDaoTest;
+import dev.fr13.configs.ConfigTest;
+import dev.fr13.database.dao.AllDaoTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import utils.PriceFormatter;
+import dev.fr13.utils.PriceFormatter;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

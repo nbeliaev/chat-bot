@@ -12,7 +12,9 @@ public class EnvConfig {
 
     public static String getProperty(String propertyName) {
         if (dotenv == null) {
-            dotenv = Dotenv.configure().load();
+            dotenv = Dotenv.configure()
+                    .directory("")
+                    .load();
             log.debug("Env properties: " + dotenv);
         }
         return dotenv.get(propertyName);

@@ -1,7 +1,7 @@
-#Chat bot   
+# Chat bot   
 A Chat bot app using Dialogflow and 1C:Enterprise.
 
-#Requirements  
+# Requirements  
 * Java 1.8
 * Postgresql
 * 1C:Enterprise (any trade solution)

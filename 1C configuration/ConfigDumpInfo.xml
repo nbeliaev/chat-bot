@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ConfigDumpInfo xmlns="http://v8.1c.ru/8.3/xcf/dumpinfo" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" format="Hierarchical" version="2.9">
+	<ConfigVersions>
+		<Metadata name="AccumulationRegister.ТоварыНаСкладах" id="57bab679-6ca4-4b97-a267-3db26ed8e87c" configVersion="3366767be5a6d042aefb3eda956af76500000000">
+			<Metadata name="AccumulationRegister.ТоварыНаСкладах.Resource.Количество" id="4671b313-4bd2-44c4-8e27-bc07c3d38998"/>
+		</Metadata>
+		<Metadata name="Catalog.Номенклатура" id="395868d8-f5eb-4f0d-9a2e-bd97b3341b58" configVersion="fe10b5c786a278458ba151bb205a657700000000"/>
+		<Metadata name="CommonModule.ChatBot" id="87bc14d7-c52c-40d0-90ed-2bb6b313572c" configVersion="9b4aa1ea7566154ca0c854da21f232e700000000"/>
+		<Metadata name="CommonModule.ChatBot.Module" id="87bc14d7-c52c-40d0-90ed-2bb6b313572c.0" configVersion="1c858ef48198904c993f571068d3b4f900000000"/>
+		<Metadata name="CommonModule.ChatBotEventHandlers" id="2343bce6-3476-4751-b87d-62cebdbce77c" configVersion="07fd26a4c15b924db27d2438c6038eb400000000"/>
+		<Metadata name="CommonModule.ChatBotEventHandlers.Module" id="2343bce6-3476-4751-b87d-62cebdbce77c.0" configVersion="ca733ab4e6ba3d438d38757ee46eb97200000000"/>
+		<Metadata name="CommonModule.ChatBotOverdiable" id="97127415-3393-4c89-810d-de9a88e83244" configVersion="86c762aca4c64f4f87c6124be25a3aac00000000"/>
+		<Metadata name="CommonModule.ChatBotOverdiable.Module" id="97127415-3393-4c89-810d-de9a88e83244.0" configVersion="da643addbcce704eb1dc3dff1039823d00000000"/>
+		<Metadata name="CommonModule.ChatBotService" id="d506783f-d8c9-4602-8828-e47fcb8a3a9a" configVersion="e99a6396eb2ad04fb48509f0624de36200000000"/>
+		<Metadata name="CommonModule.ChatBotService.Module" id="d506783f-d8c9-4602-8828-e47fcb8a3a9a.0" configVersion="f0f71a3d5afd4644b7456c0f54b8969400000000"/>
+		<Metadata name="Configuration.Configuration" id="69d5552f-52d3-41c6-9536-2adbf9445e65" configVersion="6702d756d0969140b62d6c2151d5a8d000000000"/>
+		<Metadata name="DefinedType.ProductsInStores" id="d5d2cfc2-1a71-4b3b-8aea-dcb804ee8f6a" configVersion="1ba52a33f886a04ab99d8308346e018600000000"/>
+		<Metadata name="Document.ПриходТоваров" id="830bc31e-e690-4428-b7d3-96c2d77d3795" configVersion="a2547236884f3742b34b2bb161be020500000000"/>
+		<Metadata name="EventSubscription.ChatBotProdutsInStoresOnWrite" id="b384525f-38f2-4ad6-a028-fa6537bbde5a" configVersion="ea9008c730cdb544b876ff2e00fc7d5900000000"/>
+		<Metadata name="ExchangePlan.ExchangeChatBot" id="96c6c069-be4f-4566-ad12-fe6a0556af44" configVersion="092c5fccee8f2d43860e740cd69bbccb00000000"/>
+		<Metadata name="ExchangePlan.ExchangeChatBot.Content" id="96c6c069-be4f-4566-ad12-fe6a0556af44.1" configVersion="f02fc9f34acf434cbc8f7d1731e0fc1200000000"/>
+		<Metadata name="ExchangePlan.ExchangeChatBot.ManagerModule" id="96c6c069-be4f-4566-ad12-fe6a0556af44.3" configVersion="b7c4684cb8a97c40bb19a89bdeeee2f600000000"/>
+		<Metadata name="HTTPService.BotAPI" id="27422f87-1ba5-4125-bbe7-65cdb193b6f3" configVersion="84c33e31275feb4fabcc1a29a0365a8000000000">
+			<Metadata name="HTTPService.BotAPI.URLTemplate.GetStores" id="38b36109-5533-436f-a089-003af0049777"/>
+			<Metadata name="HTTPService.BotAPI.URLTemplate.GetPorducts.Method.products" id="50b40bbd-0346-4d47-8062-87dc8110106b"/>
+			<Metadata name="HTTPService.BotAPI.URLTemplate.GetPorducts" id="66f28da4-c323-4be0-bc12-139990a2e4fa"/>
+			<Metadata name="HTTPService.BotAPI.URLTemplate.GetStores.Method.stores" id="f47a5f54-026d-4117-af69-8fc757cdcbdd"/>
+		</Metadata>
+		<Metadata name="HTTPService.BotAPI.Module" id="27422f87-1ba5-4125-bbe7-65cdb193b6f3.0" configVersion="6976de1c3fbd1d419d99b56d5b0b4ce600000000"/>
+		<Metadata name="InformationRegister.ChatBotMessages" id="3b962e65-e814-46a6-bd06-c886c26c6f96" configVersion="0431fcaaa97ef949a0749e7d5a83707900000000">
+			<Metadata name="InformationRegister.ChatBotMessages.Dimension.Id" id="87c47abd-e5a4-4dc8-957a-fd783ce039da"/>
+			<Metadata name="InformationRegister.ChatBotMessages.Resource.Message" id="cadba309-93b2-4ec0-9c3b-63b653c49d29"/>
+		</Metadata>
+		<Metadata name="Language.English" id="e1e5c39a-9a73-4f19-96f1-4adfa9616dba" configVersion="a9bbd52cc94f374c876bbc45e2d90d5400000000"/>
+		<Metadata name="Role.BotAPI" id="b0b3d78e-de24-4af1-b2e0-a90e9925e35b" configVersion="cc104331a5e8054e95ec1ab11d425c5a00000000"/>
+		<Metadata name="Role.BotAPI.Rights" id="b0b3d78e-de24-4af1-b2e0-a90e9925e35b.0" configVersion="b4bebc0da401734a822f67135f90b0d100000000"/>
+		<Metadata name="Subsystem.ChatBot" id="9a651492-0e74-4643-8ec4-488d3b1929bc" configVersion="4cca318938fdc347a1b2c67715ede1f900000000"/>
+	</ConfigVersions>
+</ConfigDumpInfo>
